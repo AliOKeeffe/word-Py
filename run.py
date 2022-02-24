@@ -1,7 +1,12 @@
-WORD = 'snakp'
+# import colorama for adding colour
+import colorama
+from colorama import Fore, Back, Style
+colorama.init(autoreset=True)
+
+WORD = 'snapp'
 word_dict = {index : value for index, value in enumerate(WORD)}
 print(word_dict)
-USER_INPUT = 'supep'
+USER_INPUT = 'ssses'
 
 # https://www.codegrepper.com/code-examples/python/python+turn+char+list+to+dictionary
 def get_user_guess():
@@ -30,36 +35,30 @@ def check_matching_letters(user_guess):
     """
     Compare user guess again word
     """
-    # # if user_guess == word_dict:
-    #     # print('you win')
-    # for letr in user_guess.values():
-    #     if letr not in word_dict.values():
-    #         print(f"word doesn't contain {letr}")
-    # # This check if the letter is in the word and in the correct position (i.e green)
-    # for letr in user_guess.values():
-    #     if letr in word_dict.values():
-    #         print(letr)
 
-    # # This checks if the letter is in the word and in the correct position (i.e green)
-    # for letr in user_guess.items():
-    #     if letr in word_dict.items():
-    #         print(letr)
- 
-    for ind,letr in user_guess.items():
-        if letr == word_dict[ind]:
-            print(f'Green {letr}')
-        elif letr in word_dict.values():
-            print(f'Orange {letr}')
+    responseString = ""
+
+    for i in range(0,5):
+        if user_guess[i] == word_dict[i]:
+            responseString += (Back.GREEN + user_guess[i])
+
+        elif user_guess[i] in word_dict.values():
+            responseString += (Back.YELLOW + user_guess[i])
+        
         else:
-            print(f'Grey {letr}')
- 
-    # word_dict.values()
+            responseString += (Back.RED + user_guess[i])
 
-    # word_dict.items()
+    # for ind,letr in user_guess.items():
+    #     if letr == word_dict[ind]:
+    #         responseString += (Back.GREEN + letr)
+            
+    #     elif letr in word_dict.values():
+    #         responseString += (Back.YELLOW + letr)
+    #         # need to ensure duplicate letter doesn't go orange if its already green
+    #     else:
+    #         responseString += (Back.RED + letr)
 
-
-
-
+    print(responseString)
 # def check_letter_in_word():
 
 user_guess = get_user_guess()
