@@ -3,10 +3,10 @@ import colorama
 from colorama import Fore, Back, Style
 colorama.init(autoreset=True)
 
-WORD = 'snapp'
+WORD = 'cheas'
 word_dict = {index : value for index, value in enumerate(WORD)}
 print(word_dict)
-USER_INPUT = 'ssses'
+USER_INPUT = 'shaps'
 
 # https://www.codegrepper.com/code-examples/python/python+turn+char+list+to+dictionary
 def get_user_guess():
@@ -36,17 +36,23 @@ def check_matching_letters(user_guess):
     Compare user guess again word
     """
 
-    responseString = ""
+    response_string = ""
 
-    for i in range(0,5):
-        if user_guess[i] == word_dict[i]:
-            responseString += (Back.GREEN + user_guess[i])
+    if user_guess == word_dict:
+        print('Congratulations you have won!')
 
-        elif user_guess[i] in word_dict.values():
-            responseString += (Back.YELLOW + user_guess[i])
-        
-        else:
-            responseString += (Back.RED + user_guess[i])
+
+    else:
+        for i in range(0,5):
+            if user_guess[i] == word_dict[i]:
+                response_string += (Back.GREEN + user_guess[i])
+                word_dict[i] = "-"
+
+            elif user_guess[i] in word_dict.values():
+                response_string += (Back.YELLOW + user_guess[i])
+            
+            else:
+                response_string += (Back.RED + user_guess[i])
 
     # for ind,letr in user_guess.items():
     #     if letr == word_dict[ind]:
@@ -58,7 +64,7 @@ def check_matching_letters(user_guess):
     #     else:
     #         responseString += (Back.RED + letr)
 
-    print(responseString)
+    print(response_string)
 # def check_letter_in_word():
 
 user_guess = get_user_guess()
