@@ -1,10 +1,12 @@
+
+# import random to get random word for game
+import random
+
 # import colorama for colour coding letters
 import colorama
 from colorama import Fore, Back, Style
 colorama.init(autoreset=True)
 
-# import random to get random word for game
-import random
 
 # WORD = 'cheas'
 # word_dict = {index : value for index, value in enumerate(WORD)}
@@ -12,18 +14,19 @@ import random
 # USER_INPUT = 'books'
 
 # class Wordle:
-    
+
+
 def get_game_word():
     """
     Open txt file and get random word
     """
-    f = open('words.txt', 'r')
-    lines = f.read().splitlines()
-    f.close
+    file = open('words.txt', 'r')
+    lines = file.read().splitlines()
+    file.close
     random_word = random.choice(lines)
-    game_word = {index : value for index, value in enumerate(random_word)}
-    print(game_word)
-    return game_word
+    game_word_dict = {index: value for index, value in enumerate(random_word)}
+    print(game_word_dict)
+    return game_word_dict
 
 
 # https://www.codegrepper.com/code-examples/python/python+turn+char+list+to+dictionary
@@ -35,15 +38,13 @@ def get_user_guess():
     """
     while True:
         print("Please enter your guess")
-        print("This should be 5 characters long and needs to be an actual word")
+        print("This should be 5 characters long and an actual word.")
 
         guess_str = input('Enter your guess here:\n').lower()
         your_guess = {}
         for index, value in enumerate(guess_str):
             your_guess[index] = value
-
         # user_input_dict = {index:value for index, value in enumerate(USER_INPUT)}
-        
 
         if validate_user_guess(guess_str):
             print('Guess is valid')
@@ -59,20 +60,18 @@ def validate_user_guess(guess):
     try:
         if len(guess) != 5:
             raise ValueError(
-                f'That is not a 5 letter word. \n'
+                'That is not a 5 letter word. \n'
             )
-        elif guess.isalpha() == False:
+        elif guess.isalpha() is False:
             raise ValueError(
-                f'Please only enter letters not numbers \n'
+                'Please only enter letters not numbers \n'
             )
         # need to add in check to see if its an actual word
-    except ValueError as e:
-        print(f'Invalid data: {e}Please try again. \n')
+    except ValueError as error:
+        print(f'Invalid data: {error}Please try again. \n')
         return False
-    
+
     return True
-
-
 
 
 def check_matching_letters(game_word, user_guess):
@@ -86,10 +85,10 @@ def check_matching_letters(game_word, user_guess):
         print('Congratulations you have won!')
 
     else:
-        for ind,letr in user_guess.items():
+        for ind, letr in user_guess.items():
             if letr == game_word[ind]:
                 response_string += (Back.GREEN + letr)
-                
+
             elif letr in game_word.values():
                 response_string += (Back.YELLOW + letr)
                 # need to ensure duplicate letter doesn't go orange if its already green
@@ -103,7 +102,7 @@ def check_matching_letters(game_word, user_guess):
 
         #     elif user_guess[i] in word_dict.values():
         #         response_string += (Back.YELLOW + user_guess[i])
-            
+
         #     else:
         #         response_string += (Back.RED + user_guess[i])
 
@@ -114,3 +113,8 @@ def check_matching_letters(game_word, user_guess):
 game_word = get_game_word()
 user_guess = get_user_guess()
 check_matching_letters(game_word, user_guess)
+
+no_of_chances = 6
+
+# while no_of_chances <= 6:
+#     print(f'You have {no_of_chances} attempts remaining')
