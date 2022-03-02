@@ -1,4 +1,3 @@
-
 # import random to get random word for game
 import random
 
@@ -49,7 +48,6 @@ def get_user_guess():
         if validate_user_guess(guess_str):
             print('Guess is valid')
             break
-
     return your_guess
 
 
@@ -81,19 +79,19 @@ def check_matching_letters(game_word, user_guess):
 
     response_string = ""
 
-    if user_guess == game_word:
-        print('Congratulations you have won!')
+    # if user_guess == game_word:
+    #     print('Congratulations you have won!')
 
-    else:
-        for ind, letr in user_guess.items():
-            if letr == game_word[ind]:
-                response_string += (Back.GREEN + letr)
+    # else:
+    for ind, letr in user_guess.items():
+        if letr == game_word[ind]:
+            response_string += (Back.GREEN + letr)
 
-            elif letr in game_word.values():
-                response_string += (Back.YELLOW + letr)
-                # need to ensure duplicate letter doesn't go orange if its already green
-            else:
-                response_string += (Back.RED + letr)
+        elif letr in game_word.values():
+            response_string += (Back.YELLOW + letr)
+            # need to ensure duplicate letter doesn't go orange if its already green
+        else:
+            response_string += (Back.RED + letr)
 
         # for i in range(0,5):
         #     if user_guess[i] == word_dict[i]:
@@ -110,11 +108,30 @@ def check_matching_letters(game_word, user_guess):
 # def check_letter_in_word():
 
 
-game_word = get_game_word()
-user_guess = get_user_guess()
-check_matching_letters(game_word, user_guess)
+def main():
+    """
+    Run all program functions
+    """
+    no_of_chances = 6
+    game_word = get_game_word()
+    while no_of_chances <= 6:
+        if no_of_chances == 0:
+            print("Gameover, No chances Left!\n")
+            # play_again()
+            break
+        else:
+            print(
+                f"You have {no_of_chances} chances left\n")
+            no_of_chances -= 1
 
-no_of_chances = 6
+            user_guess = get_user_guess()
 
-# while no_of_chances <= 6:
-#     print(f'You have {no_of_chances} attempts remaining')
+            if user_guess == game_word:
+                print('you win')
+                # play_again()
+                break
+            else:
+                check_matching_letters(game_word, user_guess)
+
+
+play_game = main()
