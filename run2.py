@@ -21,14 +21,13 @@ def get_answer_from_file():
     lines = file.read().splitlines()
     file.close
     random_word = random.choice(lines)
-    print(random_word)
     return random_word
 
 
-class Word:
+class WordChecker:
 
-    def __init__(self, game_word):
-        self.game_word = game_word
+    def __init__(self, answer):
+        self.answer = answer
 
 
     def validate_user_guess(self, guess):
@@ -37,13 +36,9 @@ class Word:
         """
         try:
             if len(guess) != 5:
-                raise ValueError(
-                    'That is not a 5 letter word. \n'
-                )
+                raise ValueError('That is not a 5 letter word. \n')
             elif guess.isalpha() is False:
-                raise ValueError(
-                    'Please only enter letters not numbers \n'
-                )
+                raise ValueError('Please only enter letters not numbers \n')
             # need to add in check to see if its an actual word
         except ValueError as error:
             print(f'Invalid data: {error}Please try again. \n')
@@ -62,10 +57,10 @@ class Word:
         user_guess_dict = {index: value for index, value in enumerate(user_guess)}
   
         for ind, letr in user_guess_dict.items():
-            if letr == self.game_word[ind]:
+            if letr == self.answer[ind]:
                 response_string += (Back.GREEN + letr)
 
-            elif letr in self.game_word:
+            elif letr in self.answer:
                 response_string += (Back.YELLOW + letr)
                 # need to ensure duplicate letter doesn't go orange if its already green
             else:
@@ -73,81 +68,120 @@ class Word:
         print(response_string)
 
 
-def introduction():
-    """
-    Introduction Message
-    """
-    print(pyfiglet.figlet_format("WELCOME TO WORD-PY", justify="center", width=80))
+class Game:
 
-    print(Fore.GREEN + "Can you guess the word in 6 tries?\n".center(80))
+    def __init__(self, word_checker):
+        self.word_checker = word_checker
+        self.no_of_chances = 6
 
-    while True:
-        username = input("Please enter your name to begin.\n").capitalize()
+    def introduction(self):
+        """
+        Introduction Message
+        """
+        print(pyfiglet.figlet_format("WELCOME TO WORD-PY", justify="center", width=80))
+        print(Fore.GREEN + "Can you guess the word in 6 tries?\n".center(80))
+        while True:
+            username = input("Please enter your name to begin.\n").capitalize()
 
-        if len(username.strip()) == 0:
-            print(f"{Fore.RED}Name not valid!\n")
+            if len(username.strip()) == 0:
+                print(f"{Fore.RED}Name not valid!\n")
+            else:
+                break
+        print(f"Hello {username}, welcome to Word-PY.\n")
+        print("How to Play".center(80))
+        print(f"""{Fore.MAGENTA}=======================================================\n""".center(80))
+        print("Guess the word in 6 tries")
+        print("Each guess MUST be a valid 5 letter word")
+        print("After each guess, the color of the letters will change to show how close your guess was to the word")
+    
+
+    def play_again(self):
+        """
+        when the game ends ask the user if they wish to quit or play again
+        """
+        user_choice = input("Play Again? Y or N\n").strip().lower()
+
+        if user_choice == "y":
+            os.system('clear')
+            main()
+
+        elif user_choice == "n":
+            print("Goodbye. Hope to see you soon")
+            exit()
+
         else:
-            break
-    print(f"Hello {username}, welcome to Word-PY.\n")
-    print("How to Play".center(80))
-    print(f"""{Fore.MAGENTA}
-    =======================================================\n""".center(80))
-    print("Guess the word in 6 tries")
-    print("Each guess MUST be a valid 5 letter word")
-    print("After each guess, the color of the letters will change \
-to show how close your guess was to the word")
+            print("Not a valid option")
+            self.play_again()
 
 
-def play_again():
-    """
-    when the game ends ask the user if they wish to quit or play again
-    """
-    user_choice = input("Play Again? Y or N\n").strip().lower()
-
-    if user_choice == "y":
-        os.system('clear')
-        main()
-
-    elif user_choice == "n":
-        print("Goodbye. Hope to see you soon")
-        exit()
-
-    else:
-        print("Not a valid option")
-        play_again()
+    def ask_for_guess(self):
+        while self.no_of_chances <= 6:
+            if self.no_of_chances == 0:
+                print("Gameover, No chances Left!\n")
+                self.play_again()
+            else:
+                print(f"You have {self.no_of_chances} chances left\n")
+            while True:
+                user_input = input('Enter your guess here:\n').lower().strip()
+                if self.word_checker.validate_user_guess(user_input):
+                    self.no_of_chances -= 1
+                    self.word_checker.check_matching_letters(user_input)
+                    break
 
 
 def main():
     """
     Run all program functions
     """
-    no_of_chances = 6
-    introduction()
+    
+    # Define the answer
     answer = get_answer_from_file()
-    run_game = Word(answer)
-    while no_of_chances <= 6:
-        if no_of_chances == 0:
-            print("Gameover, No chances Left!\n")
-            play_again()
-            break
-        else:
-            print(
-                f"You have {no_of_chances} chances left\n")
-            while True:
-                user_guess = input('Enter your guess here:\n').lower().strip()
+    # Use answer to instantiate Word
+    word_checker = WordChecker(answer)
 
-                if run_game.validate_user_guess(user_guess):
-                    print('Guess is valid')
-                    break
+    # Instantiate game, passing it the answer Word
+    game = Game(word_checker)
+
+    # Start the Game introduction (show the rules, ask for a name)
+    game.introduction()
+    game.ask_for_guess()
+
+
+    # While # of chances < the limit
+        # Ask the user to provide a guess
+        # Check the guess against the answer
+        # Print out formatted guess string
+        # If it's not a successful guess, decrement the chances counter
+
+
+    # if Game.has_chances_left:
+    #     Game.ask_for_guess()
+    # else
+    #     Game.end_message()
+
+    # while no_of_chances <= 6:
+    #     if no_of_chances == 0:
+    #         print("Gameover, No chances Left!\n")
+    #         play_again()
+    #         break
+    #     else:
+    #         print(
+    #             f"You have {no_of_chances} chances left\n")
+    #         while True:
+    #             user_guess = input('Enter your guess here:\n').lower().strip()
+
+    #             if run_game.validate_user_guess(user_guess):
+    #                 print('Guess is valid')
+    #                 break
                         
-            no_of_chances -= 1
+    #         no_of_chances -= 1
 
-            if user_guess == answer:
-                print('you win')
-                play_again()
-                break
-            else:
-                run_game.check_matching_letters(user_guess)
+    #         if user_guess == answer:
+    #             print('you win')
+    #             play_again()
+    #             break
+    #         else:
+    #             run_game.check_matching_letters(user_guess)
 
 
 play_game = main()
