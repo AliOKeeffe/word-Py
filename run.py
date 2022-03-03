@@ -9,6 +9,9 @@ colorama.init(autoreset=True)
 #import Acsii art library - pyfiglet
 import pyfiglet
 
+# import to clear terminal
+import os
+
 
 # WORD = 'cheas'
 # word_dict = {index : value for index, value in enumerate(WORD)}
@@ -134,6 +137,23 @@ def introduction():
     print("After each guess, the color of the letters will change \
 to show how close your guess was to the word")
 
+def play_again():
+    """
+    when the game ends ask the user if they wish to quit or play again
+    """
+    user_choice = input("Play Again? Y or N\n").lower()
+
+    if user_choice == "y":
+        os.system('clear')
+        main()
+    
+    elif user_choice == "n":
+        print("Goodbye. Hope to see you soon")
+        exit()
+
+    else:
+        print("Not a valid option")
+        play_again()
 
 def main():
     """
@@ -145,7 +165,7 @@ def main():
     while no_of_chances <= 6:
         if no_of_chances == 0:
             print("Gameover, No chances Left!\n")
-            # play_again()
+            play_again()
             break
         else:
             print(
@@ -156,7 +176,7 @@ def main():
 
             if user_guess == game_word:
                 print('you win')
-                # play_again()
+                play_again()
                 break
             else:
                 check_matching_letters(game_word, user_guess)
