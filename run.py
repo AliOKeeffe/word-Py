@@ -6,6 +6,9 @@ import colorama
 from colorama import Fore, Back, Style
 colorama.init(autoreset=True)
 
+#import Acsii art library - pyfiglet
+import pyfiglet
+
 
 # WORD = 'cheas'
 # word_dict = {index : value for index, value in enumerate(WORD)}
@@ -107,12 +110,37 @@ def check_matching_letters(game_word, user_guess):
     print(response_string)
 # def check_letter_in_word():
 
+def introduction():
+    """
+    Introduction Message
+    """
+    print(pyfiglet.figlet_format("WELCOME TO WORD-PY", justify="center", width=80))
+
+    print(Fore.GREEN + "Can you guess the word in 6 tries?\n".center(80))
+
+    while True:
+        username = input("Please enter your name to begin.\n")
+
+        if len(username.strip()) == 0:
+            print(f"{Fore.RED}Name not valid!\n")
+        else:
+            break
+    print(f"Hello {username}, welcome to Word-PY.\n")
+    print("How to Play".center(80))
+    print(f"""{Fore.MAGENTA}
+    =======================================================\n""".center(80))
+    print("Guess the word in 6 tries")
+    print("Each guess MUST be a valid 5 letter word")
+    print("After each guess, the color of the letters will change \
+to show how close your guess was to the word")
+
 
 def main():
     """
     Run all program functions
     """
     no_of_chances = 6
+    introduction()
     game_word = get_game_word()
     while no_of_chances <= 6:
         if no_of_chances == 0:
