@@ -13,12 +13,6 @@ from colorama import Fore, Back, Style
 colorama.init(autoreset=True)
 
 
-# WORD = 'cheas'
-# word_dict = {index : value for index, value in enumerate(WORD)}
-# print(word_dict)
-# USER_INPUT = 'books'
-
-
 def get_answer_from_file():
     """
     Open txt file and get random word
@@ -27,7 +21,6 @@ def get_answer_from_file():
     lines = file.read().splitlines()
     file.close
     random_word = random.choice(lines)
-    # game_word_dict = {index: value for index, value in enumerate(random_word)}
     print(random_word)
     return random_word
 
@@ -148,7 +141,6 @@ def main():
                     break
                         
             no_of_chances -= 1
-            
 
             if user_guess == answer:
                 print('you win')
