@@ -1,16 +1,16 @@
+# import to clear terminal
+import os
+
 # import random to get random word for game
 import random
+
+# import Acsii art library - pyfiglet
+import pyfiglet
 
 # import colorama for colour coding letters
 import colorama
 from colorama import Fore, Back, Style
 colorama.init(autoreset=True)
-
-#import Acsii art library - pyfiglet
-import pyfiglet
-
-# import to clear terminal
-import os
 
 
 # WORD = 'cheas'
@@ -32,6 +32,11 @@ def get_game_word():
     game_word_dict = {index: value for index, value in enumerate(random_word)}
     print(game_word_dict)
     return game_word_dict
+
+
+# class Word():
+
+#     def __init__(self, game_word_dict)
 
 
 # https://www.codegrepper.com/code-examples/python/python+turn+char+list+to+dictionary
@@ -113,6 +118,7 @@ def check_matching_letters(game_word, user_guess):
     print(response_string)
 # def check_letter_in_word():
 
+
 def introduction():
     """
     Introduction Message
@@ -137,6 +143,7 @@ def introduction():
     print("After each guess, the color of the letters will change \
 to show how close your guess was to the word")
 
+
 def play_again():
     """
     when the game ends ask the user if they wish to quit or play again
@@ -146,7 +153,7 @@ def play_again():
     if user_choice == "y":
         os.system('clear')
         main()
-    
+
     elif user_choice == "n":
         print("Goodbye. Hope to see you soon")
         exit()
@@ -154,6 +161,7 @@ def play_again():
     else:
         print("Not a valid option")
         play_again()
+
 
 def main():
     """
