@@ -29,8 +29,8 @@ def get_game_word():
     lines = file.read().splitlines()
     file.close
     random_word = random.choice(lines)
-    game_word_dict = {index: value for index, value in enumerate(random_word)}
-    print(game_word_dict)
+    # game_word_dict = {index: value for index, value in enumerate(random_word)}
+    print(random_word)
     return game_word_dict
 
 
