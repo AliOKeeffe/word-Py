@@ -34,7 +34,8 @@ class OxfordDictAPI:
     def __init__(self):
         self.app_id = "2cc1e2ca"
         self.app_key = "70d544c9e8e544718a3e8c7bf4f563d4"
-        self.endpoint = "entries"
+        self.base_url = "https://od-api.oxforddictionaries.com/api/v2"
+        self.headers = {"app_id": self.app_id, "app_key": self.app_key}
 
 
     def check_in_dict(self, guess):
@@ -42,10 +43,10 @@ class OxfordDictAPI:
         look up the user guess in oxford dict.
         Return the status code
         """
-        self.url = "https://od-api.oxforddictionaries.com/api/v2/" + self.endpoint + "/en-gb/" + guess.lower()
-        self.r = requests.get(self.url, headers = {"app_id": self.app_id, "app_key": self.app_key})
-        print("code {}\n".format(self.r.status_code))
-        return self.r.status_code
+        url = self.base_url + "/entries/en-gb/" + guess.lower()
+        api_response = requests.get(url, headers = self.headers)
+        print("code {}\n".format(api_response.status_code))
+        return api_response.status_code
 
 # app_id  = "2cc1e2ca"
 # app_key  = "70d544c9e8e544718a3e8c7bf4f563d4"
