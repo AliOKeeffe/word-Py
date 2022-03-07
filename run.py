@@ -4,7 +4,7 @@ import os
 # import random to get random word for game
 import random
 
-#imports for Oxford Dictionary API to check word
+# imports for Oxford Dictionary API to check word
 import requests
 import json
 
@@ -27,6 +27,7 @@ def get_answer_from_file():
     random_word = random.choice(lines)
     return random_word
 
+
 class OxfordDictAPI:
     """
     checks user guess is an actual word in the Oxford Dict
@@ -37,26 +38,15 @@ class OxfordDictAPI:
         self.base_url = "https://od-api.oxforddictionaries.com/api/v2"
         self.headers = {"app_id": self.app_id, "app_key": self.app_key}
 
-
     def check_in_dict(self, guess):
         """
         look up the user guess in oxford dict.
         Return the status code
         """
         url = self.base_url + "/entries/en-gb/" + guess.lower()
-        api_response = requests.get(url, headers = self.headers)
+        api_response = requests.get(url, headers=self.headers)
         print("code {}\n".format(api_response.status_code))
         return api_response.status_code
-
-# app_id  = "2cc1e2ca"
-# app_key  = "70d544c9e8e544718a3e8c7bf4f563d4"
-# endpoint = "entries"
-# word_id = "zzzzz"
-# url = "https://od-api.oxforddictionaries.com/api/v2/" + endpoint + "/en-gb/" + word_id.lower()
-# r = requests.get(url, headers = {"app_id": app_id, "app_key": app_key})
-# print("code {}\n".format(r.status_code))
-# print("text \n" + r.text)
-# print("json \n" + json.dumps(r.json()))
 
 
 class WordChecker:
@@ -74,10 +64,10 @@ class WordChecker:
             if len(guess) != 5:
                 raise ValueError('That is not a 5 letter word. \n')
             elif guess.isalpha() is False:
-                raise ValueError('Please only enter letters not numbers \n')
-            # if the return status is not 200(success) then raise vaidation error
-            elif OxfordDictAPI().check_in_dict(guess) != 200:
-                raise ValueError('Guess must be an actual word as per the Oxford Dictionary')
+                raise ValueError('Please only enter letters not numbers. \n')
+            # if the return status is 404(not found) then raise vaidation error
+            elif OxfordDictAPI().check_in_dict(guess) == 404:
+                raise ValueError('Guess must be an actual word as per the Oxford Dictionary. \n')
         except ValueError as error:
             print(f'Invalid data: {error}Please try again. \n')
             return False
