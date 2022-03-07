@@ -25,10 +25,11 @@ def get_answer_from_file():
 
 
 class WordChecker:
-
+    """
+    Creates an instance of WordChecker
+    """
     def __init__(self, answer):
         self.answer = answer
-
 
     def validate_user_guess(self, guess):
         """
@@ -49,13 +50,12 @@ class WordChecker:
 
     def check_matching_letters(self, user_guess):
         """
-        Compare user guess against word
+        Compare user guess against answer
         """
-
         response_string = ""
 
         user_guess_dict = {index: value for index, value in enumerate(user_guess)}
-  
+
         for ind, letr in user_guess_dict.items():
             if letr == self.answer[ind]:
                 response_string += (Back.GREEN + letr)
@@ -69,6 +69,9 @@ class WordChecker:
 
 
 class Game:
+    """
+    Creates and instance of the game
+    """
 
     def __init__(self, word_checker):
         self.word_checker = word_checker
@@ -93,11 +96,10 @@ class Game:
         print("Guess the word in 6 tries")
         print("Each guess MUST be a valid 5 letter word")
         print("After each guess, the color of the letters will change to show how close your guess was to the word")
-    
 
     def play_again(self):
         """
-        when the game ends ask the user if they wish to quit or play again
+        When the game ends ask the user if they wish to quit or play again
         """
         user_choice = input("Play Again? Y or N\n").strip().lower()
 
@@ -113,8 +115,11 @@ class Game:
             print("Not a valid option")
             self.play_again()
 
-
     def ask_for_guess(self):
+        """
+        Ask the user for their guess if they have chances remaining, if not, gameover.
+        If the user guesses correctly as them if they wish to play again.
+        """
         while self.no_of_chances <= 6:
             if self.no_of_chances == 0:
                 print("Gameover, No chances Left!\n")
@@ -126,6 +131,9 @@ class Game:
                 if self.word_checker.validate_user_guess(user_input):
                     self.no_of_chances -= 1
                     self.word_checker.check_matching_letters(user_input)
+                    if user_input == self.word_checker.answer:
+                        print('you win')
+                        self.play_again()
                     break
 
 
@@ -133,7 +141,7 @@ def main():
     """
     Run all program functions
     """
-    
+
     # Define the answer
     answer = get_answer_from_file()
     # Use answer to instantiate Word
@@ -146,13 +154,11 @@ def main():
     game.introduction()
     game.ask_for_guess()
 
-
     # While # of chances < the limit
         # Ask the user to provide a guess
         # Check the guess against the answer
         # Print out formatted guess string
         # If it's not a successful guess, decrement the chances counter
-
 
     # if Game.has_chances_left:
     #     Game.ask_for_guess()
@@ -173,7 +179,7 @@ def main():
     #             if run_game.validate_user_guess(user_guess):
     #                 print('Guess is valid')
     #                 break
-                        
+
     #         no_of_chances -= 1
 
     #         if user_guess == answer:
