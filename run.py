@@ -4,6 +4,10 @@ import os
 # import random to get random word for game
 import random
 
+#imports for Oxford Dictionary API to check word
+import requests
+import json
+
 # import Acsii art library - pyfiglet
 import pyfiglet
 
@@ -23,6 +27,36 @@ def get_answer_from_file():
     random_word = random.choice(lines)
     return random_word
 
+class OxfordDictAPI:
+    """
+    checks user guess is an actual word in the Oxford Dict
+    """
+    def __init__(self):
+        self.app_id = "2cc1e2ca"
+        self.app_key = "70d544c9e8e544718a3e8c7bf4f563d4"
+        self.endpoint = "entries"
+
+
+    def check_in_dict(self, guess):
+        """
+        look up the user guess in oxford dict.
+        Return the status code
+        """
+        self.url = "https://od-api.oxforddictionaries.com/api/v2/" + self.endpoint + "/en-gb/" + guess.lower()
+        self.r = requests.get(self.url, headers = {"app_id": self.app_id, "app_key": self.app_key})
+        print("code {}\n".format(self.r.status_code))
+        return self.r.status_code
+
+# app_id  = "2cc1e2ca"
+# app_key  = "70d544c9e8e544718a3e8c7bf4f563d4"
+# endpoint = "entries"
+# word_id = "zzzzz"
+# url = "https://od-api.oxforddictionaries.com/api/v2/" + endpoint + "/en-gb/" + word_id.lower()
+# r = requests.get(url, headers = {"app_id": app_id, "app_key": app_key})
+# print("code {}\n".format(r.status_code))
+# print("text \n" + r.text)
+# print("json \n" + json.dumps(r.json()))
+
 
 class WordChecker:
     """
@@ -40,13 +74,14 @@ class WordChecker:
                 raise ValueError('That is not a 5 letter word. \n')
             elif guess.isalpha() is False:
                 raise ValueError('Please only enter letters not numbers \n')
-            # need to add in check to see if its an actual word
+            # if the return status is not 200(success) then raise vaidation error
+            elif OxfordDictAPI().check_in_dict(guess) != 200:
+                raise ValueError('Guess must be an actual word as per the Oxford Dictionary')
         except ValueError as error:
             print(f'Invalid data: {error}Please try again. \n')
             return False
 
         return True
-
 
     def check_matching_letters(self, user_guess):
         """
