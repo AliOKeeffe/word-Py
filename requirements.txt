@@ -1,1 +1,1 @@
-# Your requirements go here
+pyfiglet==0.8.post1

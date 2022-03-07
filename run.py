@@ -13,15 +13,7 @@ from colorama import Fore, Back, Style
 colorama.init(autoreset=True)
 
 
-# WORD = 'cheas'
-# word_dict = {index : value for index, value in enumerate(WORD)}
-# print(word_dict)
-# USER_INPUT = 'books'
-
-# class Wordle:
-
-
-def get_game_word():
+def get_answer_from_file():
     """
     Open txt file and get random word
     """
@@ -29,165 +21,173 @@ def get_game_word():
     lines = file.read().splitlines()
     file.close
     random_word = random.choice(lines)
-    # game_word_dict = {index: value for index, value in enumerate(random_word)}
-    print(random_word)
-    return game_word_dict
+    return random_word
 
 
-# class Word():
-
-#     def __init__(self, game_word_dict)
-
-
-# https://www.codegrepper.com/code-examples/python/python+turn+char+list+to+dictionary
-def get_user_guess():
+class WordChecker:
     """
-    Get  word guess input from ther user via the terminal
-    which must be a string 5 characters long and an actual word in Oxford Dict
-    Convert string into dictionary with index and character
+    Creates an instance of WordChecker
     """
-    while True:
-        print("Please enter your guess")
-        print("This should be 5 characters long and an actual word.")
+    def __init__(self, answer):
+        self.answer = answer
 
-        guess_str = input('Enter your guess here:\n').lower()
-        your_guess = {}
-        for index, value in enumerate(guess_str):
-            your_guess[index] = value
-        # user_input_dict = {index:value for index, value in enumerate(USER_INPUT)}
+    def validate_user_guess(self, guess):
+        """
+        Checks that user guess is valid - 5 letters and an actual word
+        """
+        try:
+            if len(guess) != 5:
+                raise ValueError('That is not a 5 letter word. \n')
+            elif guess.isalpha() is False:
+                raise ValueError('Please only enter letters not numbers \n')
+            # need to add in check to see if its an actual word
+        except ValueError as error:
+            print(f'Invalid data: {error}Please try again. \n')
+            return False
 
-        if validate_user_guess(guess_str):
-            print('Guess is valid')
-            break
-    return your_guess
+        return True
 
 
-def validate_user_guess(guess):
+    def check_matching_letters(self, user_guess):
+        """
+        Compare user guess against answer
+        """
+        response_string = ""
+
+        user_guess_dict = {index: value for index, value in enumerate(user_guess)}
+
+        for ind, letr in user_guess_dict.items():
+            if letr == self.answer[ind]:
+                response_string += (Back.GREEN + letr)
+
+            elif letr in self.answer:
+                response_string += (Back.YELLOW + letr)
+                # need to ensure duplicate letter doesn't go orange if its already green
+            else:
+                response_string += (Back.RED + letr)
+        print(response_string)
+
+
+class Game:
     """
-    Checks that user guess is valid - 5 letters and an actual word
-    """
-    try:
-        if len(guess) != 5:
-            raise ValueError(
-                'That is not a 5 letter word. \n'
-            )
-        elif guess.isalpha() is False:
-            raise ValueError(
-                'Please only enter letters not numbers \n'
-            )
-        # need to add in check to see if its an actual word
-    except ValueError as error:
-        print(f'Invalid data: {error}Please try again. \n')
-        return False
-
-    return True
-
-
-def check_matching_letters(game_word, user_guess):
-    """
-    Compare user guess against word
+    Creates and instance of the game
     """
 
-    response_string = ""
+    def __init__(self, word_checker):
+        self.word_checker = word_checker
+        self.no_of_chances = 6
 
-    # if user_guess == game_word:
-    #     print('Congratulations you have won!')
+    def introduction(self):
+        """
+        Introduction Message
+        """
+        print(pyfiglet.figlet_format("WELCOME TO WORD-PY", justify="center", width=80))
+        print(Fore.GREEN + "Can you guess the word in 6 tries?\n".center(80))
+        while True:
+            username = input("Please enter your name to begin.\n").capitalize()
 
-    # else:
-    for ind, letr in user_guess.items():
-        if letr == game_word[ind]:
-            response_string += (Back.GREEN + letr)
+            if len(username.strip()) == 0:
+                print(f"{Fore.RED}Name not valid!\n")
+            else:
+                break
+        print(f"Hello {username}, welcome to Word-PY.\n")
+        print("How to Play".center(80))
+        print(f"""{Fore.MAGENTA}=======================================================\n""".center(80))
+        print("Guess the word in 6 tries")
+        print("Each guess MUST be a valid 5 letter word")
+        print("After each guess, the color of the letters will change to show how close your guess was to the word")
 
-        elif letr in game_word.values():
-            response_string += (Back.YELLOW + letr)
-            # need to ensure duplicate letter doesn't go orange if its already green
+    def play_again(self):
+        """
+        When the game ends ask the user if they wish to quit or play again
+        """
+        user_choice = input("Play Again? Y or N\n").strip().lower()
+
+        if user_choice == "y":
+            os.system('clear')
+            main()
+
+        elif user_choice == "n":
+            print("Goodbye. Hope to see you soon")
+            exit()
+
         else:
-            response_string += (Back.RED + letr)
+            print("Not a valid option")
+            self.play_again()
 
-        # for i in range(0,5):
-        #     if user_guess[i] == word_dict[i]:
-        #         response_string += (Back.GREEN + user_guess[i])
-        #         word_dict[i] = "-"
-
-        #     elif user_guess[i] in word_dict.values():
-        #         response_string += (Back.YELLOW + user_guess[i])
-
-        #     else:
-        #         response_string += (Back.RED + user_guess[i])
-
-    print(response_string)
-# def check_letter_in_word():
-
-
-def introduction():
-    """
-    Introduction Message
-    """
-    print(pyfiglet.figlet_format("WELCOME TO WORD-PY", justify="center", width=80))
-
-    print(Fore.GREEN + "Can you guess the word in 6 tries?\n".center(80))
-
-    while True:
-        username = input("Please enter your name to begin.\n")
-
-        if len(username.strip()) == 0:
-            print(f"{Fore.RED}Name not valid!\n")
-        else:
-            break
-    print(f"Hello {username}, welcome to Word-PY.\n")
-    print("How to Play".center(80))
-    print(f"""{Fore.MAGENTA}
-    =======================================================\n""".center(80))
-    print("Guess the word in 6 tries")
-    print("Each guess MUST be a valid 5 letter word")
-    print("After each guess, the color of the letters will change \
-to show how close your guess was to the word")
-
-
-def play_again():
-    """
-    when the game ends ask the user if they wish to quit or play again
-    """
-    user_choice = input("Play Again? Y or N\n").lower()
-
-    if user_choice == "y":
-        os.system('clear')
-        main()
-
-    elif user_choice == "n":
-        print("Goodbye. Hope to see you soon")
-        exit()
-
-    else:
-        print("Not a valid option")
-        play_again()
+    def ask_for_guess(self):
+        """
+        Ask the user for their guess if they have chances remaining, if not, gameover.
+        If the user guesses correctly as them if they wish to play again.
+        """
+        while self.no_of_chances <= 6:
+            if self.no_of_chances == 0:
+                print("Gameover, No chances Left!\n")
+                self.play_again()
+            else:
+                print(f"You have {self.no_of_chances} chances left\n")
+            while True:
+                user_input = input('Enter your guess here:\n').lower().strip()
+                if self.word_checker.validate_user_guess(user_input):
+                    self.no_of_chances -= 1
+                    self.word_checker.check_matching_letters(user_input)
+                    if user_input == self.word_checker.answer:
+                        print('you win')
+                        self.play_again()
+                    break
 
 
 def main():
     """
     Run all program functions
     """
-    no_of_chances = 6
-    introduction()
-    game_word = get_game_word()
-    while no_of_chances <= 6:
-        if no_of_chances == 0:
-            print("Gameover, No chances Left!\n")
-            play_again()
-            break
-        else:
-            print(
-                f"You have {no_of_chances} chances left\n")
-            no_of_chances -= 1
 
-            user_guess = get_user_guess()
+    # Define the answer
+    answer = get_answer_from_file()
+    # Use answer to instantiate Word
+    word_checker = WordChecker(answer)
 
-            if user_guess == game_word:
-                print('you win')
-                play_again()
-                break
-            else:
-                check_matching_letters(game_word, user_guess)
+    # Instantiate game, passing it the answer Word
+    game = Game(word_checker)
+
+    # Start the Game introduction (show the rules, ask for a name)
+    game.introduction()
+    game.ask_for_guess()
+
+    # While # of chances < the limit
+        # Ask the user to provide a guess
+        # Check the guess against the answer
+        # Print out formatted guess string
+        # If it's not a successful guess, decrement the chances counter
+
+    # if Game.has_chances_left:
+    #     Game.ask_for_guess()
+    # else
+    #     Game.end_message()
+
+    # while no_of_chances <= 6:
+    #     if no_of_chances == 0:
+    #         print("Gameover, No chances Left!\n")
+    #         play_again()
+    #         break
+    #     else:
+    #         print(
+    #             f"You have {no_of_chances} chances left\n")
+    #         while True:
+    #             user_guess = input('Enter your guess here:\n').lower().strip()
+
+    #             if run_game.validate_user_guess(user_guess):
+    #                 print('Guess is valid')
+    #                 break
+
+    #         no_of_chances -= 1
+
+    #         if user_guess == answer:
+    #             print('you win')
+    #             play_again()
+    #             break
+    #         else:
+    #             run_game.check_matching_letters(user_guess)
 
 
 play_game = main()
