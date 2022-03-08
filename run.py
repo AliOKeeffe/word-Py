@@ -1,5 +1,30 @@
+# import to clear terminal
+import os
+
+# import random to get random word for game
+import random
+
+# import gpsread
 import gspread
 from google.oauth2.service_account import Credentials
+
+# imports for Oxford Dictionary API to check word
+import json
+import requests
+
+# import Acsii art library - pyfiglet
+import pyfiglet
+
+# import colorama for colour coding letters
+import colorama
+from colorama import Fore, Back, Style
+colorama.init(autoreset=True)
+
+# credit post by anna_ci in code institute slack channel https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500
+from os import path
+if path.exists("env.py"):
+    import env
+
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -15,25 +40,6 @@ SHEET = GSPREAD_CLIENT.open('word-Py-Leaderboard')
 leaderboard = SHEET.worksheet('leaderboard')
 data = leaderboard.get_all_values()
 print(data)
-
-# import to clear terminal
-import os
-
-# import random to get random word for game
-import random
-
-# imports for Oxford Dictionary API to check word
-import requests
-import json
-
-# import Acsii art library - pyfiglet
-import pyfiglet
-
-# import colorama for colour coding letters
-import colorama
-from colorama import Fore, Back, Style
-colorama.init(autoreset=True)
-
 
 def get_answer_from_file():
     """
@@ -95,8 +101,8 @@ class WordChecker:
             elif guess.isalpha() is False:
                 raise ValueError('Please only enter letters not numbers. \n')
             # if the return status is 404(not found) then raise vaidation error
-            # elif OxfordDictAPI().check_in_dict(guess) == 404:
-            #     raise ValueError('Guess must be an actual word as per the Oxford Dictionary. \n')
+            elif OxfordDictAPI().check_in_dict(guess) == 404:
+                raise ValueError('Guess must be an actual word as per the Oxford Dictionary. \n')
         except ValueError as error:
             print(f'Invalid data: {error}Please try again. \n')
             return False
@@ -199,8 +205,6 @@ class Game:
         """
         Add name and score to row in leadboard spreadsheet
         """
-
-
 
 
 def main():
