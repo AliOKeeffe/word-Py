@@ -14,7 +14,7 @@ SHEET = GSPREAD_CLIENT.open('word-Py-Leaderboard')
 
 leaderboard = SHEET.worksheet('leaderboard')
 data = leaderboard.get_all_values()
-print(data)   
+print(data)
 
 # import to clear terminal
 import os
@@ -51,8 +51,7 @@ class OxfordDictAPI:
     checks user guess is an actual word in the Oxford Dict
     """
     def __init__(self):
-        self.app_id = "2cc1e2ca"
-        self.app_key = "70d544c9e8e544718a3e8c7bf4f563d4"
+        self.load_api_credentials()
         self.base_url = "https://od-api.oxforddictionaries.com/api/v2"
         self.headers = {"app_id": self.app_id, "app_key": self.app_key}
 
@@ -65,6 +64,16 @@ class OxfordDictAPI:
         api_response = requests.get(url, headers=self.headers)
         print("code {}\n".format(api_response.status_code))
         return api_response.status_code
+
+    def load_api_credentials(self):
+        """
+        Get API credentials from json file
+        credit: https://www.programiz.com/python-programming/json
+        """
+        with open('oxford_api_credentials.json', 'r') as json_file:
+            credentials = json.load(json_file)
+        self.app_id = credentials["app_id"]
+        self.app_key = credentials["app_key"]
 
 
 class WordChecker:
@@ -180,10 +189,6 @@ class Game:
                         self.play_again()
                     break
 
-    
-
-
-
 
 def main():
     """
@@ -238,4 +243,4 @@ def main():
     #             run_game.check_matching_letters(user_guess)
 
 
-# play_game = main()
+play_game = main()
