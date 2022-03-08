@@ -70,10 +70,12 @@ class OxfordDictAPI:
         Get API credentials from json file
         credit: https://www.programiz.com/python-programming/json
         """
-        with open('oxford_api_credentials.json', 'r') as json_file:
-            credentials = json.load(json_file)
-        self.app_id = credentials["app_id"]
-        self.app_key = credentials["app_key"]
+        # with open('oxford_api_credentials.json', 'r') as json_file:
+        #     credentials = json.load(json_file)
+        # self.app_id = credentials["app_id"]
+        # self.app_key = credentials["app_key"]
+        self.app_id = os.environ["OXFORD_API_APP_ID"]
+        self.app_key = os.environ["OXFORD_API_APP_KEY"]
 
 
 class WordChecker:
@@ -93,8 +95,8 @@ class WordChecker:
             elif guess.isalpha() is False:
                 raise ValueError('Please only enter letters not numbers. \n')
             # if the return status is 404(not found) then raise vaidation error
-            elif OxfordDictAPI().check_in_dict(guess) == 404:
-                raise ValueError('Guess must be an actual word as per the Oxford Dictionary. \n')
+            # elif OxfordDictAPI().check_in_dict(guess) == 404:
+            #     raise ValueError('Guess must be an actual word as per the Oxford Dictionary. \n')
         except ValueError as error:
             print(f'Invalid data: {error}Please try again. \n')
             return False
@@ -129,6 +131,7 @@ class Game:
     def __init__(self, word_checker):
         self.word_checker = word_checker
         self.no_of_chances = 6
+        self.username = ""
 
     def introduction(self):
         """
@@ -137,13 +140,13 @@ class Game:
         print(pyfiglet.figlet_format("WELCOME TO WORD-PY", justify="center", width=80))
         print(Fore.GREEN + "Can you guess the word in 6 tries?\n".center(80))
         while True:
-            username = input("Please enter your name to begin.\n").capitalize()
+            self.username = input("Please enter your name to begin.\n").capitalize()
 
-            if len(username.strip()) == 0:
+            if len(self.username.strip()) == 0:
                 print(f"{Fore.RED}Name not valid!\n")
             else:
                 break
-        print(f"Hello {username}, welcome to Word-PY.\n")
+        print(f"Hello {self.username}, welcome to Word-PY.\n")
         print("How to Play".center(80))
         print(f"""{Fore.MAGENTA}=======================================================\n""".center(80))
         print("Guess the word in 6 tries")
@@ -185,9 +188,19 @@ class Game:
                     self.no_of_chances -= 1
                     self.word_checker.check_matching_letters(user_input)
                     if user_input == self.word_checker.answer:
-                        print('you win')
+                        score = 6 - self.no_of_chances
+                        print(f'Well done you got the correct answer in {score} attempts!')
+                        self.update_leaderboard(score)
+                        print(self.username)
                         self.play_again()
                     break
+
+    def update_leaderboard(self, score):
+        """
+        Add name and score to row in leadboard spreadsheet
+        """
+
+
 
 
 def main():
