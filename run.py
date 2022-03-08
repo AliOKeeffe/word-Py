@@ -12,8 +12,12 @@ from google.oauth2.service_account import Credentials
 import json
 import requests
 
+from datetime import date
+
 # import Acsii art library - pyfiglet
 import pyfiglet
+
+import pandas as pd
 
 # import colorama for colour coding letters
 import colorama
@@ -37,9 +41,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('word-Py-Leaderboard')
 
-leaderboard = SHEET.worksheet('leaderboard')
-data = leaderboard.get_all_values()
-print(data)
+
 
 def get_answer_from_file():
     """
@@ -49,6 +51,7 @@ def get_answer_from_file():
     lines = file.read().splitlines()
     file.close
     random_word = random.choice(lines)
+    print(random_word)
     return random_word
 
 
@@ -73,7 +76,7 @@ class OxfordDictAPI:
 
     def load_api_credentials(self):
         """
-        Get API credentials from json file
+        Get API credentials from env.py file
         credit: https://www.programiz.com/python-programming/json
         """
         # with open('oxford_api_credentials.json', 'r') as json_file:
@@ -101,8 +104,8 @@ class WordChecker:
             elif guess.isalpha() is False:
                 raise ValueError('Please only enter letters not numbers. \n')
             # if the return status is 404(not found) then raise vaidation error
-            elif OxfordDictAPI().check_in_dict(guess) == 404:
-                raise ValueError('Guess must be an actual word as per the Oxford Dictionary. \n')
+            # elif OxfordDictAPI().check_in_dict(guess) == 404:
+            #     raise ValueError('Guess must be an actual word as per the Oxford Dictionary. \n')
         except ValueError as error:
             print(f'Invalid data: {error}Please try again. \n')
             return False
@@ -138,6 +141,7 @@ class Game:
         self.word_checker = word_checker
         self.no_of_chances = 6
         self.username = ""
+        self.leaderboard = SHEET.worksheet('leaderboard')
 
     def introduction(self):
         """
@@ -197,15 +201,32 @@ class Game:
                         score = 6 - self.no_of_chances
                         print(f'Well done you got the correct answer in {score} attempts!')
                         self.update_leaderboard(score)
-                        print(self.username)
+                        self.show_leaderboard()
                         self.play_again()
                     break
 
     def update_leaderboard(self, score):
         """
-        Add name and score to row in leadboard spreadsheet
+        Add name, score and date to row in leaderboard spreadsheet
         """
+        today = date.today()
+        # https://www.programiz.com/python-programming/datetime/current-datetime
+        date_format = today.strftime("%d/%m/%Y")
+        print('Updating leaderboard...\n')
+        self.leaderboard.append_row([self.username, score, date_format])
+        print("Leaderboard Updated")
 
+    def show_leaderboard(self):
+        """
+        show the top 10 entries in the leaderboard
+        """
+        scores = self.leaderboard.get_all_values()
+        columns = scores[0]
+        data = scores[1:]
+        print(columns)
+        print(data)
+        df = pd.DataFrame(data, columns=columns)
+        print(df)
 
 def main():
     """
