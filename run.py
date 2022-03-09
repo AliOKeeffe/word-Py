@@ -42,7 +42,6 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('word-Py-Leaderboard')
 
 
-
 def get_answer_from_file():
     """
     Open txt file and get random word
@@ -116,20 +115,19 @@ class WordChecker:
         """
         Compare user guess against answer
         """
-        response_list = []
         response_string = ""
 
         user_guess_dict = {index: value for index, value in enumerate(user_guess)}
 
         for ind, letr in user_guess_dict.items():
             if letr == self.answer[ind]:
-                response_string += (Back.GREEN + letr)
+                response_string += (Back.GREEN + letr.upper())
 
             elif letr in self.answer:
-                response_string += (Back.YELLOW + letr)
+                response_string += (Back.YELLOW + letr.upper())
                 # need to ensure duplicate letter doesn't go orange if its already green
             else:
-                response_string += (Back.RED + letr)
+                response_string += (Back.RED + letr.upper())
         return response_string
 
 
@@ -160,10 +158,13 @@ class Game:
                 break
         print(f"Hello {self.username}, welcome to Word-PY.\n")
         print("How to Play".center(80))
-        print(f"""{Fore.MAGENTA}=======================================================\n""".center(80))
+        print(f"""{Fore.MAGENTA}
+        ==============================================================\n""")
         print("Guess the word in 6 tries")
         print("Each guess MUST be a valid 5 letter word")
         print("After each guess, the color of the letters will change to show how close your guess was to the word")
+        print(f"""{Fore.YELLOW}\n
+        ==============================================================""")
 
     def play_again(self):
         """
@@ -194,10 +195,10 @@ class Game:
         """
         while self.no_of_chances <= 6:
             if self.no_of_chances == 0:
-                print("Gameover, No chances Left!\n")
+                print("\nGameover, No chances Left!\n")
                 self.play_again()
             else:
-                print(f"You have {self.no_of_chances} chances left\n")
+                print(f"\nYou have {self.no_of_chances} chances left.\n")
             while True:
                 user_input = input('Enter your guess here:\n').lower().strip()
                 if self.word_checker.validate_user_guess(user_input):
@@ -205,7 +206,7 @@ class Game:
                     self.display_guesses(user_input)
                     if user_input == self.word_checker.answer:
                         score = 6 - self.no_of_chances
-                        print(f'Well done you got the correct answer!')
+                        print('\nWell done you got the correct answer!\n')
                         self.update_leaderboard(score)
                         self.play_again()
                     break
@@ -217,7 +218,7 @@ class Game:
         current_guess = self.word_checker.check_matching_letters(user_input)
         self.guesses_list.append(current_guess)
         for i in self.guesses_list:
-            print(i)
+            print("\t"+i)
 
     def update_leaderboard(self, score):
         """
@@ -228,7 +229,7 @@ class Game:
         date_format = today.strftime("%d/%m/%Y")
         print('Updating leaderboard...\n')
         self.leaderboard.append_row([self.username, score, date_format])
-        print("Leaderboard Updated")
+        print("Leaderboard Updated.\n")
 
     def show_leaderboard(self):
         """
