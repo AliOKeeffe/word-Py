@@ -1,40 +1,27 @@
-# import to clear terminal
-import os
-
-# import random to get random word for game
-import random
-
-# import gpsread
-import gspread
-from google.oauth2.service_account import Credentials
-
-# imports for Oxford Dictionary API to check word
-import json
-import requests
-
+# credit post by anna_ci in code institute slack channel
+# https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500
+from os import path
 from datetime import date
-
-# import Acsii art library - pyfiglet
-import pyfiglet
-
+import os  # import to clear terminal
+import random  # import random to get random word for game
+import gspread  # import gpsread
+from google.oauth2.service_account import Credentials
+import requests
+import pyfiglet  # import Acsii art library - pyfiglet
 import pandas as pd
-
-# import colorama for colour coding letters
-import colorama
+import colorama  # import colorama for colour coding letters
 from colorama import Fore, Back, Style
+
 colorama.init(autoreset=True)
 
-# credit post by anna_ci in code institute slack channel https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500
-from os import path
 if path.exists("env.py"):
     import env
-
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
-    ]
+]
 
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
@@ -103,8 +90,10 @@ class WordChecker:
             elif guess.isalpha() is False:
                 raise ValueError('Please only enter letters not numbers. \n')
             # if the return status is 404(not found) then raise vaidation error
-            # elif OxfordDictAPI().check_in_dict(guess) == 404:
-            #     raise ValueError('Guess must be an actual word as per the Oxford Dictionary. \n')
+            elif OxfordDictAPI().check_in_dict(guess) == 404:
+                raise ValueError(
+                    'Guess must be a word as per the Oxford Dictionary.\n'
+                    )
         except ValueError as error:
             print(f'Invalid data: {error}Please try again. \n')
             return False
@@ -117,7 +106,9 @@ class WordChecker:
         """
         response_string = ""
 
-        user_guess_dict = {index: value for index, value in enumerate(user_guess)}
+        user_guess_dict = {
+            index: value for index, value in enumerate(user_guess)
+            }
 
         for ind, letr in user_guess_dict.items():
             if letr == self.answer[ind]:
@@ -125,7 +116,8 @@ class WordChecker:
 
             elif letr in self.answer:
                 response_string += (Back.YELLOW + letr.upper())
-                # need to ensure duplicate letter doesn't go orange if its already green
+                # need to ensure duplicate letter doesn't
+                # go orange if its already green
             else:
                 response_string += (Back.RED + letr.upper())
         return response_string
@@ -147,30 +139,48 @@ class Game:
         """
         Introduction Message
         """
-        print(pyfiglet.figlet_format("WELCOME TO WORD-PY", justify="center", width=80))
+        print(pyfiglet.figlet_format(
+            "WELCOME TO WORD-PY", justify="center", width=80))
         print(Fore.GREEN + "Can you guess the word in 6 tries?\n".center(80))
         while True:
-            self.username = input("Please enter your name to begin.\n").capitalize()
+            self.username = input(
+                "Please enter your name to begin.\n").capitalize()
 
             if len(self.username.strip()) == 0:
                 print(f"{Fore.RED}Name not valid!\n")
             else:
                 break
         print(f"Hello {self.username}, welcome to Word-PY.\n")
-        print("How to Play".center(80))
-        print(f"""{Fore.MAGENTA}
-        ==============================================================\n""")
-        print("Guess the word in 6 tries")
-        print("Each guess MUST be a valid 5 letter word")
-        print("After each guess, the color of the letters will change to show how close your guess was to the word")
-        print(f"""{Fore.YELLOW}\n
-        ==============================================================""")
+
+        intro_message = """
+         __| |____________________________________________| |__
+        (__   ____________________________________________   __)
+           | |                                            | |
+           | |               How to Play                  | |
+           | |                                            | |
+           | |    Guess the word in SIX or less tries     | |
+           | |                                            | |
+           | |  Each guess MUST be a valid 5 letter word  | |
+           | |                                            | |
+           | | After each guess, the color of the letters | |
+           | |   will change to show how close your guess | |
+           | |              was to the word!              | |
+           | |                                            | |
+           | |   Green is a correct letter and position   | |
+           | | Yellow is a correct letter, wrong position | |
+           | |           Red is a wrong letter            | |
+         __| |____________________________________________| |__
+        (__   ____________________________________________   __)
+           | |                                            | |
+        """
+        print(intro_message)
 
     def play_again(self):
         """
         When the game ends ask the user if they wish to quit or play again
         """
-        user_choice = input("P - PLAY AGAIN\nL - LEADERBOARD\nQ - QUIT\n").strip().lower()
+        user_choice = input(
+            "P - PLAY AGAIN\nL - LEADERBOARD\nQ - QUIT\n").strip().lower()
 
         if user_choice == "p":
             os.system('clear')
@@ -183,14 +193,15 @@ class Game:
         elif user_choice == "l":
             self.show_leaderboard()
             self.play_again()
-        
+
         else:
             print("Not a valid option")
             self.play_again()
 
     def ask_for_guess(self):
         """
-        Ask the user for their guess if they have chances remaining, if not, gameover.
+        Ask the user for their guess if they have chances remaining,
+        if not the the game is over.
         If the user guesses correctly as them if they wish to play again.
         """
         while self.no_of_chances <= 6:
@@ -233,21 +244,23 @@ class Game:
 
     def show_leaderboard(self):
         """
-        Sort the leaderboard by date and then by number of attempts using Pandas
-        Show the top 10 entries in the leaderboard
+        Sort the leaderboard by date and then by number of attempts using
+        Pandas then Show the top 10 entries in the leaderboard
         Credit: https://realpython.com/pandas-sort-python/
         """
         scores = self.leaderboard.get_all_values()
         columns = scores[0]
         data = scores[1:]
-        
+
         df = pd.DataFrame(data, columns=columns)
-        sorted = df.sort_values(
-            by=['Date', 'Number of Attempts'],
+        # https://www.tutorialspoint.com/python-center-align-column-headers-of-a-pandas-dataframe
+        pd.set_option('display.colheader_justify', 'center')
+        df.sort_values(
+            by=['Date', 'Attempts'],
             ascending=[False, True]
             )
-        sorted = sorted.reset_index(drop=True)
-        print(sorted.head(10))
+        df.reset_index(drop=True)
+        print(df.head(10))
 
 
 def main():
@@ -255,54 +268,11 @@ def main():
     Run all program functions
     """
 
-    # Define the answer
-    answer = get_answer_from_file()
-    # Use answer to instantiate Word
-    word_checker = WordChecker(answer)
-
-    # Instantiate game, passing it the answer Word
-    game = Game(word_checker)
+    game = Game(WordChecker(get_answer_from_file()))
 
     # Start the Game introduction (show the rules, ask for a name)
     game.introduction()
     game.ask_for_guess()
 
-    # game.show_leaderboard()
 
-    # While # of chances < the limit
-        # Ask the user to provide a guess
-        # Check the guess against the answer
-        # Print out formatted guess string
-        # If it's not a successful guess, decrement the chances counter
-
-    # if Game.has_chances_left:
-    #     Game.ask_for_guess()
-    # else
-    #     Game.end_message()
-
-    # while no_of_chances <= 6:
-    #     if no_of_chances == 0:
-    #         print("Gameover, No chances Left!\n")
-    #         play_again()
-    #         break
-    #     else:
-    #         print(
-    #             f"You have {no_of_chances} chances left\n")
-    #         while True:
-    #             user_guess = input('Enter your guess here:\n').lower().strip()
-
-    #             if run_game.validate_user_guess(user_guess):
-    #                 print('Guess is valid')
-    #                 break
-
-    #         no_of_chances -= 1
-
-    #         if user_guess == answer:
-    #             print('you win')
-    #             play_again()
-    #             break
-    #         else:
-    #             run_game.check_matching_letters(user_guess)
-
-
-play_game = main()
+main()
