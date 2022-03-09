@@ -218,15 +218,22 @@ class Game:
 
     def show_leaderboard(self):
         """
-        show the top 10 entries in the leaderboard
+        Sort the leaderboard by date and then by number of attempts using Pandas
+        Show the top 10 entries in the leaderboard
+        Credit: https://realpython.com/pandas-sort-python/
         """
         scores = self.leaderboard.get_all_values()
         columns = scores[0]
         data = scores[1:]
-        print(columns)
-        print(data)
+        
         df = pd.DataFrame(data, columns=columns)
-        print(df)
+        sorted = df.sort_values(
+            by=['Date', 'Number of Attempts'],
+            ascending=[False, True]
+            )
+        sorted = sorted.reset_index(drop=True)
+        print(sorted.head(10))
+
 
 def main():
     """
@@ -244,6 +251,8 @@ def main():
     # Start the Game introduction (show the rules, ask for a name)
     game.introduction()
     game.ask_for_guess()
+
+    # game.show_leaderboard()
 
     # While # of chances < the limit
         # Ask the user to provide a guess
