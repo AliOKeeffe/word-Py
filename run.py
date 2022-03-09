@@ -116,6 +116,7 @@ class WordChecker:
         """
         Compare user guess against answer
         """
+        response_list = []
         response_string = ""
 
         user_guess_dict = {index: value for index, value in enumerate(user_guess)}
@@ -129,7 +130,7 @@ class WordChecker:
                 # need to ensure duplicate letter doesn't go orange if its already green
             else:
                 response_string += (Back.RED + letr)
-        print(response_string)
+        return response_string
 
 
 class Game:
@@ -139,6 +140,7 @@ class Game:
 
     def __init__(self, word_checker):
         self.word_checker = word_checker
+        self.guesses_list = []
         self.no_of_chances = 6
         self.username = ""
         self.leaderboard = SHEET.worksheet('leaderboard')
@@ -167,16 +169,20 @@ class Game:
         """
         When the game ends ask the user if they wish to quit or play again
         """
-        user_choice = input("Play Again? Y or N\n").strip().lower()
+        user_choice = input("P - PLAY AGAIN\nL - LEADERBOARD\nQ - QUIT\n").strip().lower()
 
-        if user_choice == "y":
+        if user_choice == "p":
             os.system('clear')
             main()
 
-        elif user_choice == "n":
+        elif user_choice == "q":
             print("Goodbye. Hope to see you soon")
             exit()
 
+        elif user_choice == "l":
+            self.show_leaderboard()
+            self.play_again()
+        
         else:
             print("Not a valid option")
             self.play_again()
@@ -196,14 +202,22 @@ class Game:
                 user_input = input('Enter your guess here:\n').lower().strip()
                 if self.word_checker.validate_user_guess(user_input):
                     self.no_of_chances -= 1
-                    self.word_checker.check_matching_letters(user_input)
+                    self.display_guesses(user_input)
                     if user_input == self.word_checker.answer:
                         score = 6 - self.no_of_chances
-                        print(f'Well done you got the correct answer in {score} attempts!')
+                        print(f'Well done you got the correct answer!')
                         self.update_leaderboard(score)
-                        self.show_leaderboard()
                         self.play_again()
                     break
+
+    def display_guesses(self, user_input):
+        """
+        Display the users guess one after the other with colors
+        """
+        current_guess = self.word_checker.check_matching_letters(user_input)
+        self.guesses_list.append(current_guess)
+        for i in self.guesses_list:
+            print(i)
 
     def update_leaderboard(self, score):
         """
