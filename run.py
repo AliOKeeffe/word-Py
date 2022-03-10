@@ -90,10 +90,10 @@ class WordChecker:
             elif guess.isalpha() is False:
                 raise ValueError('Please only enter letters not numbers. \n')
             # if the return status is 404(not found) then raise vaidation error
-            elif OxfordDictAPI().check_in_dict(guess) == 404:
-                raise ValueError(
-                    'Guess must be a word as per the Oxford Dictionary.\n'
-                    )
+            # elif OxfordDictAPI().check_in_dict(guess) == 404:
+            #     raise ValueError(
+            #         'Guess must be a word as per the Oxford Dictionary.\n'
+            #         )
         except ValueError as error:
             print(f'Invalid data: {error}Please try again. \n')
             return False
@@ -150,9 +150,18 @@ class Game:
                 print(f"{Fore.RED}Name not valid!\n")
             else:
                 break
-        print(f"Hello {self.username}, welcome to Word-PY.\n")
+        print(f"\nHello {self.username}, welcome to Word-PY.\n")
+        print('Please choose from the following options:\n')
 
-        intro_message = """
+        user_option = input(
+            "P - PLAY\nI - Instructions\n").strip().lower()
+
+        if user_option == "p":
+            self.ask_for_guess()
+
+        elif user_option == "i":
+                    #  https://www.asciiart.eu/art-and-design/borders
+            intro_message = """
          __| |____________________________________________| |__
         (__   ____________________________________________   __)
            | |                                            | |
@@ -173,7 +182,11 @@ class Game:
         (__   ____________________________________________   __)
            | |                                            | |
         """
-        print(intro_message)
+            print(intro_message)
+            self.ask_for_guess()
+        else:
+            print("Not a valid option")
+            self.play_again()
 
     def play_again(self):
         """
@@ -272,7 +285,7 @@ def main():
 
     # Start the Game introduction (show the rules, ask for a name)
     game.introduction()
-    game.ask_for_guess()
+    # game.ask_for_guess()
 
 
 main()
