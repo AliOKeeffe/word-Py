@@ -112,14 +112,14 @@ class WordChecker:
 
         for ind, letr in user_guess_dict.items():
             if letr == self.answer[ind]:
-                response_string += (Back.GREEN + letr.upper())
+                response_string += (Back.GREEN + Fore.BLACK + letr.upper())
 
             elif letr in self.answer:
-                response_string += (Back.YELLOW + letr.upper())
+                response_string += (Back.YELLOW + Fore.BLACK + letr.upper())
                 # need to ensure duplicate letter doesn't
                 # go orange if its already green
             else:
-                response_string += (Back.RED + letr.upper())
+                response_string += (Back.RED + Fore.BLACK + letr.upper())
         return response_string
 
 
@@ -241,8 +241,11 @@ class Game:
         """
         current_guess = self.word_checker.check_matching_letters(user_input)
         self.guesses_list.append(current_guess)
+        
+        print(f"""\n{Fore.CYAN}\t=====================\n""")
         for i in self.guesses_list:
-            print("\t"+i)
+            print("\t\t"+i)
+        print(f"""\n{Fore.CYAN}\t=====================""")
 
     def update_leaderboard(self, score):
         """
