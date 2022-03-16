@@ -159,7 +159,7 @@ class Game:
         Ask the user if the wish to play or see the instructions.
         """
         user_option = input(
-            "P - PLAY\nI - Instructions\n").strip().lower()
+            "P - PLAY\nI - INSTRUCTIONS\n").strip().lower()
 
         if user_option == "p":
             self.ask_for_guess()
@@ -225,6 +225,7 @@ class Game:
         while self.no_of_chances <= 6:
             if self.no_of_chances == 0:
                 print("\nGameover, No chances Left!\n")
+                print(f"The answer is....{self.word_checker.answer.upper()}\n")
                 self.play_again()
             else:
                 print(f"\nYou have {self.no_of_chances} chances left.\n")
