@@ -152,7 +152,12 @@ class Game:
                 break
         print(f"\nHello {self.username}, welcome to Word-PY.\n")
         print('Please choose from the following options:\n')
+        self.user_menu()
 
+    def user_menu(self):
+        """
+        Ask the user if the wish to play or see the instructions.
+        """
         user_option = input(
             "P - PLAY\nI - Instructions\n").strip().lower()
 
@@ -186,7 +191,7 @@ class Game:
             self.ask_for_guess()
         else:
             print("Not a valid option")
-            self.play_again()
+            self.user_menu()
 
     def play_again(self):
         """
@@ -224,7 +229,8 @@ class Game:
             else:
                 print(f"\nYou have {self.no_of_chances} chances left.\n")
             while True:
-                user_input = input('Enter your guess here:\n').lower().strip()
+                user_input = input(
+                    'Enter your 5 letter guess here:\n').lower().strip()
                 if self.word_checker.validate_user_guess(user_input):
                     self.no_of_chances -= 1
                     self.display_guesses(user_input)
@@ -268,15 +274,14 @@ class Game:
         columns = scores[0]
         data = scores[1:]
 
-        df = pd.DataFrame(data, columns=columns)
+        data_frame = pd.DataFrame(data, columns=columns)
         # https://www.tutorialspoint.com/python-center-align-column-headers-of-a-pandas-dataframe
         pd.set_option('display.colheader_justify', 'center')
-        df.sort_values(
-            by=['Date', 'Attempts'],
-            ascending=[False, True]
-            )
-        df.reset_index(drop=True)
-        print(df.head(10))
+        data_frame = data_frame.sort_values(by=['Date', 'Attempts'], ascending=[False, True])
+        data_frame = data_frame.reset_index(drop=True)
+        print(f"\n{Fore.CYAN}==============================\n")
+        print(data_frame.head(10))
+        print(f"\n{Fore.CYAN}==============================\n")
 
 
 def main():
