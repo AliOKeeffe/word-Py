@@ -90,10 +90,10 @@ class WordChecker:
             elif guess.isalpha() is False:
                 raise ValueError('Please only enter letters not numbers. \n')
             # if the return status is 404(not found) then raise vaidation error
-            # elif OxfordDictAPI().check_in_dict(guess) == 404:
-            #     raise ValueError(
-            #         'Guess must be a word as per the Oxford Dictionary.\n'
-            #         )
+            elif OxfordDictAPI().check_in_dict(guess) == 404:
+                raise ValueError(
+                    'Guess must be a word as per the Oxford Dictionary.\n'
+                    )
         except ValueError as error:
             print(f'Invalid data: {error}Please try again. \n')
             return False
@@ -248,7 +248,7 @@ class Game:
         """
         current_guess = self.word_checker.check_matching_letters(user_input)
         self.guesses_list.append(current_guess)
-        
+
         print(f"""\n{Fore.CYAN}\t=====================\n""")
         for i in self.guesses_list:
             print("\t\t"+i)
