@@ -90,10 +90,10 @@ class WordChecker:
             elif guess.isalpha() is False:
                 raise ValueError('Please only enter letters not numbers. \n')
             # if the return status is 404(not found) then raise vaidation error
-            elif OxfordDictAPI().check_in_dict(guess) == 404:
-                raise ValueError(
-                    'Guess must be a word as per the Oxford Dictionary.\n'
-                    )
+            # elif OxfordDictAPI().check_in_dict(guess) == 404:
+            #     raise ValueError(
+            #         'Guess must be a word as per the Oxford Dictionary.\n'
+            #         )
         except ValueError as error:
             print(f'Invalid data: {error}Please try again. \n')
             return False

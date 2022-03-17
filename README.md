@@ -24,19 +24,18 @@ INSERT RESPONSINATOR IMAGE
 
 ## User Stories
 
-- ### First Time User
-  - As a first time user I want to understand the main purpose of the game.
-  - As a first time user I want to be kept engaged throughout the game by being provided with easy to understand hints as to how close my guess was to the answer.
-  - As a first time user I want to be challenged by having to come up with an actual word and not just inputting random letters.
-  - As a first time user I want to see how many turns I have left.
-  - As a first time user I want to find out the answer if I am not successful.
-  - As a first time user I want to compare my score to others on the leaderboard.
-
-- ### Returning user
-  - As a returning user I want to get a new word each time I play.
-  - As a returning user I want to be able to beat my score on the leaderboard.
-  - As a returning user I want to be able to beat other user's scores on the leaderboard.
+- ### As a user I want to:
+  - understand the main purpose of the game.
+  - be kept engaged throughout the game by being provided with easy to understand hints as to how close my guess was to the answer.
+  - be challenged by having to come up with an actual word and not just inputting random letters.
+  - see how many turns I have left.
+  - find out the answer if I am not successful.
+  - compare my score to others on the leaderboard.
+  - try and beat my score on the leaderboard
+  - get a new word each time I play.
 
 Bugs
 API keys for oxford dictionary
 letter stays orange even if it's green
+Oxford API returning too much info
+Spreadsheet leaderboard data unorgnaised - pandas
