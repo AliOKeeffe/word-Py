@@ -34,18 +34,24 @@ INSERT RESPONSINATOR IMAGE
   - try and beat my score on the leaderboard
   - get a new word each time I play.
 
+
+## Logic Flow
+In order to visualise the flow of steps required in the game, I created a flow chart using Lucid Chart. It was beneficial for me to plan the project like this as it allowed me to gain an understanding of what functions were required for the game and at what stages and how the different elements of the game would interact. As the flow chart was created at the outset of the project, it does not fully reflect all elements of the game.
+
+![Flow Chart](docs/readme_images/flow_chart.png)
+
 ## Features
 
 ### Title and Introduction Section
 - When the user enters the site they are greeted with a very simple page welcoming them to the game and asking them for their name. 
 - The welcome text was creating using Pyfiglet. Imported for Ascii art. 
-- The is strong data validation on the username input. The must enter a username consisting of numbers or letters and no blank spaces. If they do not enter valid data, and error message will appear and they will be asked to input their name again.
+- There is strong data validation on the username input. They must enter a username consisting of numbers or letters and no blank spaces. If they do not enter valid data, an error message will appear and they will be asked to input their name again.
 
 ### Options menu
 - When the user enters their name the computer will welcome them to the game and repeat their name back to them. 
-- They will be asked if they would like to Play or read the Instructions
-- it doesn't matter if their input is lower or upper case. The computer can handle both inputs by using the inbuilt function, lower().
-- If the user does not input a "P" or an "I" they will get an error message asking them to input a valid selection.
+- They will be asked if they would like to Play or read the Instructions.
+- It doesn't matter if their input is lower or upper case. The computer can handle both inputs by using the inbuilt function, lower().
+- If the user does not input a "P" or an "I" they will get an error message asking them to input a valid option.
 
 ### Instructions
 - If the user keys in "I" and presses enter they will be show the game instructions. 
@@ -56,11 +62,19 @@ INSERT RESPONSINATOR IMAGE
 - The user is informed that they have 6 chances and they are asked to enter a 5 letter guess. 
 
 #### Guess Input Validation and Error Handling
-- There is user validation on the guess input as follows:
+- The following input validation is carried out on the user guess:
   - The guess must be 5 characters long.
   - The guess must be all letters.
-  - The guess must be an actual word in the Oxford English Dictionary. This validation is done using the Oxford dictionary API. EXPLAIN FURTHER HOW THIS WORKS AND TALK ABOUT KEYS IN THE ENV.PY FILE.
-
+  - The guess must be an actual word in the Oxford English Dictionary. This validation is done using the Oxford dictionary API. 
+- If the user input is not valid, the user will be given feedback on the error and will be asked to input their guess again.
+  
+### Oxford Dictionary API
+- The Oxford Dictionaries API offers access to Oxford's dictionary content. 
+- When I created an account I was given a unique App ID and App Key. These are then passed as authentication headers for each API request.
+- Due to the sensitive nature of this data, it has been added to the env.py file in the .gitignore to ensure it is not pushed to my Github repository. The App ID and App Key also had to be added to the Config Vars on Heroku to ensure they could be accessed when running the game.
+- When the user inputs a guess - the API request returns a HTTP status code. If the code returned is 404, that means that the word was not found and therefore is not a valid word.
+- If the API returns a 404 status code, an error message is printed telling the user that the input is not an actual word per the Oxford dictionary and prompts them to try again.
+- If the API returns Code 200 "Success" the guess is accepted and the game continues.
 
 #### Guess Feedback
 - Once a player has input a valid guess their guess is printed back to them in the center of the screen. 
@@ -87,40 +101,39 @@ INSERT RESPONSINATOR IMAGE
 
 ### Leaderboard
 - The Leaderboard feature was created using Google Sheets. The spreadsheet is accessed by the game through the Google Drive and Google Sheets APIs on Google Cloud Platform.
-- Credentials were generated and provided to allow access from the project to Google Sheets. These were added to the cred.json in the .gitignore file to ensure they weren't pushed to Github repository. They also had to be added to the Config Vars on Heroku to ensure they could be accessed when running the game. 
+- Credentials were generated and provided to allow access from the project to Google Sheets. These were added to the cred.json in the .gitignore file to ensure they weren't pushed to my Github repository. They also had to be added to the Config Vars on Heroku to ensure they could be accessed when running the game. 
 - The Leaderboard displays the top ten scores. The scores are sorted first by date and then by number attempts. This is to entice user to return each day to play so they can beat the top score for that particular day. 
 - In order to sort the data from the leaderboard and also to get it into a presentable format, I used Pandas which is a data analysis and manipulation tool. It has an number of inbuilt methods for sorting data.
 - INSERT SCREENSHOT OF GOOGLE SHEET 
 
-## Logic Flow
-In order to visualise the flow of steps required in the game, I created a flow chart using Lucid Chart. It was beneficial for me to plan the project like this as it allowed me to gain an understanding of what functions were required for the game and how the different elements would interact. As the flow chart was created at the outset of the project, it does not fully reflect all elements of the game.
-
-
-
-
-
+## Future Features
+- The user can determine how long they want the word to be (3/4/5/6 lettesr)
+- The definition of the word is displayed at the end of the game utilising the Oxford Dictionary API further.
 
 ## Data Model
-I used Object Oriented Programming throughout this project. The game consists of three classes:
+I used principles of Object Oriented Programming throughout this project. The WordPy game consists of three classes:
 
- - Game
- - WordChecker
- - OxfordDictAPI
+- Game
+- WordChecker
+- OxfordDictAPI
 
-One initial function is utilised at the outset to get a random "Answer" from a text file.
-This "Answer" is passed as a parameter to the "WordChecker" instance.
+The Game object is responsible for controlling the flow of the game. It handles things like taking the user input and presenting data back to the user. It contains methods for the general running of the game such as displaying the introduction, displaying user options, taking user guesses, displaying guesses, updating the leader board and displaying the leader board.
 
-The Game instance is established in the Main function and calls the introduction screen using dot notation. The Game instance is utilised to control the flow of the game, take user inputs and present data to the user. It contains methods for the general running of the game such as Introduction, displaying user options, taking user guesses, displaying guesses, updating the leaderboard and displaying the leaderboard.
+The WordChecker object is responsible for all actions related to checking the user provided "guess" input against the generated "answer". This includes validating the input, handling any errors and building the colour-coded response which is returned to the Game instance.
 
-Once the user inputs their guess, the "WordChecker" instance is established. The Wordchecker class validates the user guess data and handles errors. This includes establishing the OxfordDictAPI instance. "WordChecker" takes the Answer as a parameter and returns the colour coding of the letters based on this Answer. The return value is passed as a parameter back to the Game Class. 
+The OxfordDictAPI object communicates with the [Oxford Dictionaries API](https://developer.oxforddictionaries.com/). This class gets the API credentials from the env.py file and sends a request against this API to ensure the user provided guess is a valid English word (it exists in the Oxford English Dictionary).
 
-The OxfordDictAPI class gets the API credentials from the env.py file and checks the user guess is in the Oxford Dictionary.
+When the game is first run, an initial method is used to retrieve an “answer” word from a text file. This word is then passed as a parameter when creating the WordChecker instance. This WordChecker instance is then passed as a parameter to the Game instance.
+
+The Game class then renders the introduction screen and prompts the user for their first guess. User input is passed to WordChecker in which it’s validated and then used to return the colour-coded letters to the user via Game. Game will continue to ask the user for guesses using a while loop until the word has been correctly identified, or the max number of guesses are used.
+
+This modular approach to class and object definition meant that all of the logic was self contained, which made it easier to develop and also much easier to troubleshoot when things didn't work as initially expected.
 
 
 
-
-Bugs
+## Bugs
 API keys for oxford dictionary
 letter stays orange even if it's green
 Oxford API returning too much info
 Spreadsheet leaderboard data unorgnaised - pandas
+-printing color codes - couldn't print as a list - had to user a for loop to print each letter out separately.
