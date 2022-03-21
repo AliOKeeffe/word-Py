@@ -34,6 +34,61 @@ INSERT RESPONSINATOR IMAGE
   - try and beat my score on the leaderboard
   - get a new word each time I play.
 
+## Features
+
+### Title and Introduction Section
+- When the user enters the site they are greeted with a very simple page welcoming them to the game and asking them for their name. 
+- The welcome text was creating using Pyfiglet. Imported for Ascii art. 
+- The is strong data validation on the username input. The must enter a username consisting of numbers or letters and no blank spaces. If they do not enter valid data, and error message will appear and they will be asked to input their name again.
+
+### Options menu
+- When the user enters their name the computer will welcome them to the game and repeat their name back to them. 
+- They will be asked if they would like to Play or read the Instructions
+- it doesn't matter if their input is lower or upper case. The computer can handle both inputs. 
+- If the user does not input a "P" or an "I" they will get an error message asking them to input a valid selection.
+
+### Instructions
+- If the user keys in "I" and presses enter they will be show the game instructions. 
+- The instructions are surrounded by a scroll like border to make them clear and easy to read and to add an element of fun. 
+- The game will begin immediately below the instructions.
+
+### Game Features
+- The user is informed that they have 6 chances and they are asked to enter a 5 letter guess. 
+
+#### Guess Input Validation
+- There is user validation on the guess input as follows:
+  - The guess must be 5 characters long.
+  - The guess must be all letters.
+  - The guess must be an actual word in the Oxford English Dictionary. This validation is done using the Oxford dictionary API. EXPLAIN FURTHER HOW THIS WORKS.
+
+
+#### Guess Feedback
+- Once a player has input a valid guess their guess is printed back to them in the center of the screen. 
+- A colour background is applied to each letter in their guess to show them how close each letter is to the answer (as detailed in the game instructions).
+- Black is used as the font colour to ensure good readability against the coloured background. 
+- Each time a user inputs a guess, their previous guess along with the new guess are printed out to give the appearance of a list. This also helps the user to see which letters they have already used and whether they were correct or not. 
+- After each guess they user is informed how many chances they have left to guess. 
+
+#### Game Lost
+- If the player uses all their chances without getting the correct answer the game over message appears and the user is informed of the correct answer.
+- The Game Over menu is shown.
+
+#### Game Win
+- If the player enters the correct answer the "You Win" message appears. 
+- The user is informed that their score is being added to the leaderboard and that the leaderboard is updated. 
+- The Game Over menu is shown.
+
+### Game Over Menu
+- The Game Over menu consists of three options; Play Again, Leaderboard and Quit. 
+- It doesn't matter if their input is lower or upper case. The computer can handle both inputs. 
+- If the user does not input a "P" an "L" or an "Q" they will get an error message asking them to input a valid option.
+- If the user chooses to quit, a goodbye message appears and the game is ended using the exit() method.
+- If the user decides to play again, the terminal is cleared using the os.system('clear') method and the user is taken back to the game introduction to start again.
+
+### Leaderboard
+- 
+
+
 Bugs
 API keys for oxford dictionary
 letter stays orange even if it's green
