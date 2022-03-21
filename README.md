@@ -44,7 +44,7 @@ INSERT RESPONSINATOR IMAGE
 ### Options menu
 - When the user enters their name the computer will welcome them to the game and repeat their name back to them. 
 - They will be asked if they would like to Play or read the Instructions
-- it doesn't matter if their input is lower or upper case. The computer can handle both inputs. 
+- it doesn't matter if their input is lower or upper case. The computer can handle both inputs by using the inbuilt function, lower().
 - If the user does not input a "P" or an "I" they will get an error message asking them to input a valid selection.
 
 ### Instructions
@@ -55,11 +55,11 @@ INSERT RESPONSINATOR IMAGE
 ### Game Features
 - The user is informed that they have 6 chances and they are asked to enter a 5 letter guess. 
 
-#### Guess Input Validation
+#### Guess Input Validation and Error Handling
 - There is user validation on the guess input as follows:
   - The guess must be 5 characters long.
   - The guess must be all letters.
-  - The guess must be an actual word in the Oxford English Dictionary. This validation is done using the Oxford dictionary API. EXPLAIN FURTHER HOW THIS WORKS.
+  - The guess must be an actual word in the Oxford English Dictionary. This validation is done using the Oxford dictionary API. EXPLAIN FURTHER HOW THIS WORKS AND TALK ABOUT KEYS IN THE ENV.PY FILE.
 
 
 #### Guess Feedback
@@ -81,12 +81,22 @@ INSERT RESPONSINATOR IMAGE
 ### Game Over Menu
 - The Game Over menu consists of three options; Play Again, Leaderboard and Quit. 
 - It doesn't matter if their input is lower or upper case. The computer can handle both inputs. 
-- If the user does not input a "P" an "L" or an "Q" they will get an error message asking them to input a valid option.
+- If the user does not input one of the options they will get an error message asking them to input a valid option.
 - If the user chooses to quit, a goodbye message appears and the game is ended using the exit() method.
 - If the user decides to play again, the terminal is cleared using the os.system('clear') method and the user is taken back to the game introduction to start again.
 
 ### Leaderboard
-- 
+- The Leaderboard feature was created using Google Sheets. The spreadsheet is accessed by the game through the Google Drive and Google Sheets APIs on Google Cloud Platform.
+- Credentials were generated and provided to allow access from the project to Google Sheets. These were added to the cred.json in the .gitignore file to ensure they weren't pushed to Github repository. They also had to be added to the Config Vars on Heroku to ensure they could be accessed when running the game. 
+- The Leaderboard displays the top ten scores. The scores are sorted first by date and then by number attempts. This is to entice user to return each day to play so they can beat the top score for that particular day. 
+- In order to sort the data from the leaderboard and also to get it into a presentable format, I used Pandas which is a data analysis and manipulation tool. It has an number of inbuilt methods for sorting data.
+- INSERT SCREENSHOT OF GOOGLE SHEET 
+
+## Data Model
+- I utilised Object Oriented Programming throughout this project. The game consists of three class:
+ - WordChecker
+ - Game
+ - OxfordDictAPI
 
 
 Bugs

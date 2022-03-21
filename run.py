@@ -278,7 +278,9 @@ class Game:
         data_frame = pd.DataFrame(data, columns=columns)
         # https://www.tutorialspoint.com/python-center-align-column-headers-of-a-pandas-dataframe
         pd.set_option('display.colheader_justify', 'center')
-        data_frame = data_frame.sort_values(by=['Date', 'Attempts'], ascending=[False, True])
+        data_frame = data_frame.sort_values(
+            by=['Date', 'Attempts'],
+            ascending=[False, True])
         data_frame = data_frame.reset_index(drop=True)
         print(f"\n{Fore.CYAN}==============================\n")
         print(data_frame.head(10))
