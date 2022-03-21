@@ -92,11 +92,31 @@ INSERT RESPONSINATOR IMAGE
 - In order to sort the data from the leaderboard and also to get it into a presentable format, I used Pandas which is a data analysis and manipulation tool. It has an number of inbuilt methods for sorting data.
 - INSERT SCREENSHOT OF GOOGLE SHEET 
 
+## Logic Flow
+In order to visualise the flow of steps required in the game, I created a flow chart using Lucid Chart. It was beneficial for me to plan the project like this as it allowed me to gain an understanding of what functions were required for the game and how the different elements would interact. As the flow chart was created at the outset of the project, it does not fully reflect all elements of the game.
+
+
+
+
+
+
 ## Data Model
-- I utilised Object Oriented Programming throughout this project. The game consists of three class:
- - WordChecker
+I used Object Oriented Programming throughout this project. The game consists of three classes:
+
  - Game
+ - WordChecker
  - OxfordDictAPI
+
+One initial function is utilised at the outset to get a random "Answer" from a text file.
+This "Answer" is passed as a parameter to the "WordChecker" instance.
+
+The Game instance is established in the Main function and calls the introduction screen using dot notation. The Game instance is utilised to control the flow of the game, take user inputs and present data to the user. It contains methods for the general running of the game such as Introduction, displaying user options, taking user guesses, displaying guesses, updating the leaderboard and displaying the leaderboard.
+
+Once the user inputs their guess, the "WordChecker" instance is established. The Wordchecker class validates the user guess data and handles errors. This includes establishing the OxfordDictAPI instance. "WordChecker" takes the Answer as a parameter and returns the colour coding of the letters based on this Answer. The return value is passed as a parameter back to the Game Class. 
+
+The OxfordDictAPI class gets the API credentials from the env.py file and checks the user guess is in the Oxford Dictionary.
+
+
 
 
 Bugs
