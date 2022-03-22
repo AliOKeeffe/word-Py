@@ -44,12 +44,12 @@ In order to visualise the flow of steps required in the game, I created a flow c
 
 ### Title and Introduction Section
 - When the user enters the site they are greeted with a very simple page welcoming them to the game and asking them for their name. 
-- The welcome text was creating using Pyfiglet. Imported for Ascii art. 
-- There is strong data validation on the username input. They must enter a username consisting of numbers or letters and no blank spaces. If they do not enter valid data, an error message will appear and they will be asked to input their name again.
+- The welcome text was creating using Pyfiglet which takes ASCII text and renders it into ASCII art fonts. 
+- There is strong data validation on the username input. The user must enter a username consisting of numbers or letters. They cannot just enter a blank space. If they do not enter valid data, an error message will appear in red saying "Username must contain letters or numbers." and they will be asked to input their name again.
 
 ### Options menu
 - When the user enters their name the computer will welcome them to the game and repeat their name back to them. 
-- They will be asked if they would like to Play or read the Instructions.
+- They will be asked if they would like to Play or read the Instructions by inputting "P" or "I".
 - It doesn't matter if their input is lower or upper case. The computer can handle both inputs by using the inbuilt function, lower().
 - If the user does not input a "P" or an "I" they will get an error message asking them to input a valid option.
 
@@ -189,20 +189,13 @@ The README.md was passed through Grammarly and all links were checked before fin
 - [Grammerly]
 
 
-
-
-
-
-
-## Bugs
-API keys for oxford dictionary
-letter stays orange even if it's green
-Oxford API returning too much info
-Spreadsheet leaderboard data unorganised - pandas
+## Fixed Bugs
 
 ### API Key and ID for Oxford Dictionary
-When I first started using the Oxford Dictionary API I was given a unique ID and Key for each API request. Given this data is sensitive, I couldn't store it in the main Python file. The approach we had used for the Google Sheets Credentials in the course content was quite different so I had to research the best way to do this for my project. I came across a really helpful slack post from anna_ci in the Code Institute slack channel https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500) which explains how to set up environment variables in GitPod and I was able to get the API working in my Gitpod terminal. However when I deployed my project to Heroku I could not get the API to work as Heroku could not access my my Key and ID in the .gitignore file. I ran through the Love Sandwiches deployment procedures again and realised I need to add my Key and ID to the Config Vars in my app settings on Heroku and then the API functioned as expected. 
+When I first started using the Oxford Dictionary API I was given a unique ID and Key for each API request. Given this data is sensitive, I couldn't store it in the main Python file. The approach we had used for the Google Sheets Credentials in the course content was quite different so I had to research the best way to do this for my project. I came across a really helpful slack post from anna_ci in the Code Institute slack channel https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500) which explains how to set up environment variables in GitPod and I was able to get the API working in my Gitpod terminal. However when I deployed my project to Heroku I could not get the API to work as Heroku could not access my my Key and ID in the gitignore file. I ran through the Love Sandwiches deployment procedures again and realised I need to add my Key and ID to the Config Vars in my app settings on Heroku and then the API functioned as expected. 
 
+### Known Bugs
+letter stays orange even if it's green
 
 ### Colour Coding Letters in User Guess
 Colorama is used to add the colour coding to each of the letters in the user guess. Each time a user makes a guess, that colour coded guess is added to the "guesses_list" so that all their guesses can be printed back to them after each turn. When I initially wrote the code to print out the user guesses list, the colours were not printing out and the Colorama encoding was being printed out along side the user guess making it impossible to read. After some research I realised that the colours would only print out as a string (not a list). In order to overcome this problem I used a "for loop" to print out each string in the "guesses_list" separately. 
@@ -253,6 +246,5 @@ The site is now live and operational.
 
 
 ## Acknowledgments
-My mentor Antonio for his support and advice.
 
 The Code Institute slack community for their quick responses and very helpful feedback!

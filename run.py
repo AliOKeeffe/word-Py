@@ -9,6 +9,7 @@ import pyfiglet  # import Acsii art library - pyfiglet
 import pandas as pd
 import colorama  # import colorama for colour coding letters
 from colorama import Fore, Back, Style
+from collections import Counter
 
 colorama.init(autoreset=True)
 
@@ -78,6 +79,8 @@ class WordChecker:
     """
     def __init__(self, answer):
         self.answer = answer
+        #https://stackoverflow.com/questions/1155617/count-the-number-of-occurrences-of-a-character-in-a-string
+        self.letter_count = Counter(self.answer)
 
     def validate_user_guess(self, guess):
         """
@@ -85,16 +88,16 @@ class WordChecker:
         """
         try:
             if len(guess) != 5:
-                raise ValueError('That is not a 5 letter word. \n')
+                raise ValueError('That is not a 5 letter word.\n')
             elif guess.isalpha() is False:
-                raise ValueError('Please only enter letters not numbers. \n')
+                raise ValueError('Please only enter letters not numbers.\n')
             # if the return status is 404(not found) then raise vaidation error
             # elif OxfordDictAPI().check_in_dict(guess) == 404:
             #     raise ValueError(
             #         'Guess must be a word as per the Oxford Dictionary.\n'
             #         )
         except ValueError as error:
-            print(f'Invalid data: {error}Please try again. \n')
+            print(f'{Fore.RED}Invalid data: {error}Please try again. \n')
             return False
 
         return True
@@ -112,13 +115,16 @@ class WordChecker:
         for ind, letr in user_guess_dict.items():
             if letr == self.answer[ind]:
                 response_string += (Back.GREEN + Fore.BLACK + letr.upper())
+                self.letter_count[letr] -= 1
 
             elif letr in self.answer:
-                response_string += (Back.YELLOW + Fore.BLACK + letr.upper())
+                if self.letter_count[letr] != 0:
+                    response_string += (Back.YELLOW + Fore.BLACK + letr.upper())
                 # need to ensure duplicate letter doesn't
                 # go orange if its already green
             else:
                 response_string += (Back.RED + Fore.BLACK + letr.upper())
+        print(self.letter_count["a"])
         return response_string
         
 
@@ -141,23 +147,23 @@ class Game:
         """
         print(pyfiglet.figlet_format(
             "WELCOME TO WORD-PY", justify="center", width=80))
-        print(Fore.GREEN + "Can you guess the word in 6 tries?\n".center(80))
+        print(Fore.CYAN + "Can you guess the word in 6 tries?\n".center(80))
         while True:
             self.username = input(
                 "Please enter your name to begin.\n").strip().capitalize()
 
             if len(self.username.strip()) == 0:
-                print(f"{Fore.RED}Name not valid!\n")
+                print(f"{Fore.RED}Username must contain letters or numbers.\n")
             else:
                 break
-        print(f"\nHello {self.username}, welcome to Word-PY.\n")
-        print('Please choose from the following options:\n')
+        print(f"{Fore.CYAN}\nHello {self.username}, welcome to Word-PY.\n") 
         self.user_menu()
 
     def user_menu(self):
         """
         Ask the user if the wish to play or see the instructions.
         """
+        print('Please choose from the following options:\n')
         user_option = input(
             "P - PLAY\nI - INSTRUCTIONS\n").strip().lower()
 
@@ -190,7 +196,7 @@ class Game:
             print(intro_message)
             self.ask_for_guess()
         else:
-            print("Not a valid option")
+            print(Fore.RED+"Not a valid option\n")
             self.user_menu()
 
     def play_again(self):
