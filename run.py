@@ -1,5 +1,3 @@
-# credit post by anna_ci in code institute slack channel
-# https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500
 from os import path
 from datetime import date
 import os  # import to clear terminal
@@ -63,7 +61,8 @@ class OxfordDictAPI:
     def load_api_credentials(self):
         """
         Get API credentials from env.py file
-        credit: https://www.programiz.com/python-programming/json
+        Credit post by anna_ci in code institute slack channel
+        https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500
         """
         # with open('oxford_api_credentials.json', 'r') as json_file:
         #     credentials = json.load(json_file)
