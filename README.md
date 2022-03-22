@@ -61,7 +61,7 @@ In order to visualise the flow of steps required in the game, I created a flow c
 ### Game Features
 - The user is informed that they have 6 chances and they are asked to enter a 5 letter guess. 
 
-#### Guess Input Validation and Error Handling
+### Guess Input Validation and Error Handling
 - The following input validation is carried out on the user guess:
   - The guess must be 5 characters long.
   - The guess must be all letters.
@@ -76,18 +76,18 @@ In order to visualise the flow of steps required in the game, I created a flow c
 - If the API returns a 404 status code, an error message is printed telling the user that the input is not an actual word per the Oxford dictionary and prompts them to try again.
 - If the API returns Code 200 "Success" the guess is accepted and the game continues.
 
-#### Guess Feedback
+### Guess Feedback
 - Once a player has input a valid guess their guess is printed back to them in the center of the screen. 
 - A colour background is applied to each letter in their guess to show them how close each letter is to the answer (as detailed in the game instructions).
 - Black is used as the font colour to ensure good readability against the coloured background. 
 - Each time a user inputs a guess, their previous guess along with the new guess are printed out to give the appearance of a list. This also helps the user to see which letters they have already used and whether they were correct or not. 
 - After each guess they user is informed how many chances they have left to guess. 
 
-#### Game Lost
+### Game Lost
 - If the player uses all their chances without getting the correct answer the game over message appears and the user is informed of the correct answer.
 - The Game Over menu is shown.
 
-#### Game Win
+### Game Win
 - If the player enters the correct answer the "You Win" message appears. 
 - The user is informed that their score is being added to the leaderboard and that the leaderboard is updated. 
 - The Game Over menu is shown.
@@ -106,8 +106,8 @@ In order to visualise the flow of steps required in the game, I created a flow c
 - In order to sort the data from the leaderboard and also to get it into a presentable format, I used Pandas which is a data analysis and manipulation tool. It has an number of inbuilt methods for sorting data.
 - INSERT SCREENSHOT OF GOOGLE SHEET 
 
-## Future Features
-- The user can determine how long they want the word to be (3/4/5/6 lettesr)
+### Future Features
+- The user can determine how long they want the word to be (3/4/5/6 letters)
 - The definition of the word is displayed at the end of the game utilising the Oxford Dictionary API further.
 
 ## Data Model
@@ -129,7 +129,37 @@ The Game class then renders the introduction screen and prompts the user for the
 
 This modular approach to class and object definition meant that all of the logic was self contained, which made it easier to develop and also much easier to troubleshoot when things didn't work as initially expected.
 
+## Testing
 
+### PEP8 Testing
+The python files have all been passed through [PEP8 Online](http://pep8online.com/). All python files were checked with no errors reported. See screen show below:
+
+INSERT SCREENSHOT OF PEP8
+
+### Input Testing
+All user inputs were tested throroughly to ensure all input data is handled correctly and appropriate feedback is given to the user as follows:
+
+- Username input: the username input was tested to ensure that the user cannot just input an empty space. The name input must consists of numbers or letters. The strip() method is also used to remove any extra whitespace after the user input. If the the user does not enter valid data, an error message will appear saying that the name is not valid and they will be asked to input their name again.
+- Menu options selection: - These were tested to ensure that both upper and lower case letter inputs were accepted. Also tested to ensure that inputting a letter that does not match any of the menu options is not accepted and returns an appropriate error message. 
+- Guess Input: The following testing was completed on the user guess input:
+  - Checked that only guesses which are five characters long are accepted.
+  - Checked that the guess cannot contain numbers.
+  - Checked that the game wouldn't accepted guesses that weren't actual words. The guess must be an actual word in the Oxford English Dictionary. This validation is done using the Oxford dictionary API. 
+ - Feedback messages received when testing all of the above were checked to ensure appropriate information was relayed to the user.
+
+
+### Other Game Testing
+The game was tested throroughly to ensure the following features worked as intended:
+- A random word is selected each time a new game begins.
+- The number of chances left reduces by one after each valid guess.
+- The correct background colours are applied to the user guess as per the game instructions.
+- The game ends if the user has no turns left.
+- The game ends if the user guesses correctly. 
+- The leaderboard is updated if the user guesses the right word and the information stored in the leaderboard is correct.
+- The leaderboard displays the correct information which is sorted accurately.
+- The terminal clears if the user chooses to play again.
+
+The README.md was passed through Grammarly and all links were checked before final submission.
 
 ## Bugs
 API keys for oxford dictionary

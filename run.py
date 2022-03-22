@@ -144,7 +144,7 @@ class Game:
         print(Fore.GREEN + "Can you guess the word in 6 tries?\n".center(80))
         while True:
             self.username = input(
-                "Please enter your name to begin.\n").capitalize()
+                "Please enter your name to begin.\n").strip().capitalize()
 
             if len(self.username.strip()) == 0:
                 print(f"{Fore.RED}Name not valid!\n")
