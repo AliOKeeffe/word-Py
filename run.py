@@ -79,8 +79,7 @@ class WordChecker:
     """
     def __init__(self, answer):
         self.answer = answer
-        #https://stackoverflow.com/questions/1155617/count-the-number-of-occurrences-of-a-character-in-a-string
-        self.letter_count = Counter(self.answer)
+        # https://stackoverflow.com/questions/1155617/count-the-number-of-occurrences-of-a-character-in-a-string
 
     def validate_user_guess(self, guess):
         """
@@ -106,28 +105,39 @@ class WordChecker:
         """
         Compare user guess against answer
         """
-        response_string = ""
+        letter_count = Counter(self.answer)
 
         user_guess_dict = {
             index: value for index, value in enumerate(user_guess)
             }
 
-        for ind, letr in user_guess_dict.items():
-            if letr == self.answer[ind]:
-                response_string += (Back.GREEN + Fore.BLACK + letr.upper())
-                self.letter_count[letr] -= 1
+        response = {}
 
-            elif letr in self.answer:
-                if self.letter_count[letr] != 0:
-                    response_string += (Back.YELLOW + Fore.BLACK + letr.upper())
-                # need to ensure duplicate letter doesn't
-                # go orange if its already green
-            else:
-                response_string += (Back.RED + Fore.BLACK + letr.upper())
-        print(self.letter_count["a"])
+        for ind, letr in user_guess_dict.items(): # for every letter in the guess
+            if letr == self.answer[ind]: # if it's in the word and in the right place
+                response[ind] = {"value": letr, "color": "green"} # define it as green
+                letter_count[letr] -= 1 # subtract 1 from that letter's count
+
+        for ind, letr in user_guess_dict.items(): # for every letter in the guess
+            if letr != self.answer[ind]: # if it's not already gone green
+                if letr in self.answer and letter_count[letr] != 0: # if the letter is in the word and the letter's count is not 0
+                    response[ind] = {"value": letr, "color": "yellow"} # define it as yellow
+                    letter_count[letr] -= 1 # subtract 1 from that letter's count
+                else:
+                    response[ind] = {"value": letr, "color": "red"} # define it as red
+
+        response_string = ""
+        for key in sorted(response): # we need to sort the dictionary by the index - the dictinoary is ordered based on when the item was added, which will be based on the conditions above, as opposed to the order the user entered the characters
+            value_dictionary = response[key]
+            if value_dictionary["color"] == "green":
+                response_string += (Back.GREEN)
+            elif value_dictionary["color"] == "yellow":
+                response_string += (Back.YELLOW)
+            elif value_dictionary["color"] == "red":
+                response_string += (Back.RED)
+            response_string += Fore.BLACK + value_dictionary["value"].upper()
+
         return response_string
-        
-
 
 class Game:
     """

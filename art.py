@@ -19,3 +19,11 @@ intro_message = """
         (__   ____________________________________________   __)
            | |                                            | |
         """
+
+train
+beach
+books
+under
+horse
+fruit
+house

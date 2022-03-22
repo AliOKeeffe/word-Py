@@ -1,2 +1,7 @@
-baaaa
-traaa
+train
+beach
+books
+under
+horse
+fruit
+house
