@@ -120,6 +120,7 @@ class WordChecker:
             else:
                 response_string += (Back.RED + Fore.BLACK + letr.upper())
         return response_string
+        
 
 
 class Game:
