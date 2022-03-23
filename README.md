@@ -11,7 +11,7 @@ INSERT RESPONSINATOR IMAGE
 - The user has 6 chances to guess a random 5 letter word.
 - After each guess the user is provided with color coded blocks which let them know if their chosen letters are correct and in the right position;
   - Green means that the letter is in the word and is in the correct position.
-  - Yellow means that the letter is in the word but is in the wrong position
+  - Yellow means that the letter is in the word but is in the wrong position.
   - Red means that the letter is not in the word. 
 - The user must guess carefully as their guess needs to be an actual word within the Oxford English Dictionary.
 - If the user guesses the correct word within 6 turns they have won the game. 
@@ -199,28 +199,28 @@ When I was testing the game I noticed that if I inputted a guess which contained
 
 In the example above, the first "E" should be red as it has already been guessed correctly but instead it is yellow.
 
-This reason for this was due to the for loop colour coding the first instance of the letter it encountered first and then when the second instance goes green the first instance remains unchanged. 
+This was because when the `for loop` first encounters the letter "E" the program won't know if it will encounter that letter again in subsequent loops and therefore has to colour it yellow. When the `for loop` encounters the next "E" it correctly colours it green however it cannot go back and change the first instance of "E" retroactively meaning it will stay yellow. 
 
 This was a very complex problem to solve. Firstly I had to count the number of instances of each letter in the Answer. I found a post on stack overflow which detailed the Counter method from the Collections python library. Once I got the letter count, then each time a letter was guessed correctly I would deduct 1 from the letter count meaning that a second instance of the letter could not go yellow after it had already gone green. 
 
-I still had an issue whereby if the letter went yellow first - then the second instance could go green but the first yellow instance wouldn't change. To solve this; I had to create two for loops instead of one. The first would check if any of the letters should be green and the second would handle the yellow and red letters. 
+I still had an issue whereby if the letter went yellow first - then the second instance could go green but the first yellow instance would remain yellow. To solve this; I had to create two `for loops` instead of one. The first would check if any of the letters should be green and the second would handle the yellow and red letters. 
 
-Now because I had two for loops, this resulted in duplicate guesses being printed out. To solve this, instead of adding the colour coded response to a string and printing it out immediately, firstly I had to add each guessed letter to a dictionary within a dictionary and add the colour of the letter as a key : value pair. Once the dictionary was created, I could then print out the colour coded string by looping through the dictionary and using an if/else statement to add the Colorama colours to each letter using the color value from the dictionary. 
+Now because I had two `for loops`, this resulted in duplicate guesses being printed out. To solve this, instead of adding the colour coded response to a string and printing it out immediately, I had to add each guessed letter to a dictionary within a dictionary using the letter index as the key and add the colour of the letter and the letter itself as key : value pairs. Once the dictionary was created, I could then print out the colour coded string by looping through the dictionary and using an if/else statement to add the Colorama colours to each letter using the color value from the dictionary. 
+
 
 ### Sorting the Dictionary
 
-After solving the problem above, I had a dictionary with the user guess and associated colours.
-I tested that the dictionary data was correct using print statements. I noticed that the dictionary was printing out the user guess letters in the wrong order. 
+After solving the problem above, I had a dictionary with the user guess and associated colours. I tested that the dictionary data was correct using print statements. I noticed that the dictionary was printing out the user guess letters in the wrong order. 
 
 This was because the dictionary was ordered based on when the letter was added to it. The letters were only added when the conditions for adding a colour were met, as opposed to the order the user entered the characters. 
 
 In order to solve this problem is used the sorted() method which sorted the dictionary by the letter index. 
 
 ### API Key and ID for Oxford Dictionary
-When I first started using the Oxford Dictionary API I was given a unique ID and Key for each API request. Given this data is sensitive, I couldn't store it in the main Python file. The approach we had used for the Google Sheets Credentials in the course content was quite different so I had to research the best way to do this for my project. I came across a really helpful slack post from anna_ci in the Code Institute slack channel https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500) which explains how to set up environment variables in GitPod and I was able to get the API working in my Gitpod terminal. However when I deployed my project to Heroku I could not get the API to work as Heroku could not access my my Key and ID in the gitignore file. I ran through the Love Sandwiches deployment procedures again and realised I needed to add my Key and ID to the Config Vars in my app settings on Heroku and then the API functioned as expected. 
+When I first started using the Oxford Dictionary API I was given a unique ID and Key for each API request. Given this data is sensitive, I couldn't store it in the main Python file. The approach we had used for the Google Sheets Credentials in the course content was quite different so I had to research the best way to do this for my project. I came across a really helpful slack post from anna_ci in the Code Institute slack channel https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500) which explains how to set up environment variables in GitPod and I was able to get the API working in my Gitpod terminal. However when I deployed my project to Heroku I could not get the API to work as Heroku could not access my Key and ID in the gitignore file. I ran through the Love Sandwiches deployment procedures again and realised I needed to add my Key and ID to the Config Vars in my app settings on Heroku and then the API functioned as expected. 
 
 ### Colour Coding Letters in User Guess
-Colorama is used to add the colour coding to each of the letters in the user guess. Each time a user makes a guess, that colour coded guess is added to the "guesses_list" so that all their guesses can be printed back to them after each turn. When I initially wrote the code to print out the user guesses list, the colours were not printing out and the Colorama encoding was being printed out along side the user guess making it impossible to read. After some research I realised that the colours would only print out as a string (not a list). In order to overcome this problem I used a "for loop" to print out each string in the "guesses_list" separately. 
+Colorama is used to add the colour coding to each of the letters in the user guess. Each time a user makes a guess, that colour coded guess is added to the `guesses_list` so that all their guesses can be printed back to them after each turn. When I initially wrote the code to print out the user `guesses_list`, the colours were not printing out and the Colorama encoding was being printed out along side the user guess, making it impossible to read. After some research I realised that the colours would only print out as a string (not a list). In order to overcome this problem I used a `for loop` to print out each string in the `guesses_list` separately. 
 
 ## Deployment
 
@@ -254,6 +254,7 @@ The site is now live and operational.
 ### Resources Used
 - [W3Schools](https://www.w3schools.com/)  
 - [Stack Overflow](https://stackoverflow.com/)
+- [5 Letter Words List](https://7esl.com/5-letter-words/) - The list of five letter words used in the game was taken from this site.
 - [Count occurances of a character in a string](https://stackoverflow.com/questions/1155617/count-the-number-of-occurrences-of-a-character-in-a-string) - I read about the Collections Counter method in this post.
 - [How to set up environment variables in GitPod](https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500) - This post from anna_ci in the Code Institute slack channel was very informative and enabled me to set up my environment variables correctly for my API key. 
 - [ASCII Art](https://www.asciiart.eu/art-and-design/borders) - I used this ASCII art for the border around the instructions.

@@ -36,8 +36,8 @@ def get_answer_from_file():
     lines = file.read().splitlines()
     file.close
     random_word = random.choice(lines)
-    print(random_word)
-    return random_word
+    print(random_word.lower())
+    return random_word.lower()
 
 
 class OxfordDictAPI:
