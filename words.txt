@@ -110,7 +110,6 @@ Panel
 Paper
 Party
 Peace
-Peter
 Phase
 Phone
 Piece
@@ -155,7 +154,6 @@ Simon
 Skill
 Sleep
 Smile
-Smith
 Smoke
 Sound
 South

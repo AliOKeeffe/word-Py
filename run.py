@@ -113,21 +113,21 @@ class WordChecker:
 
         response = {}
 
-        for ind, letr in user_guess_dict.items(): # for every letter in the guess
-            if letr == self.answer[ind]: # if it's in the word and in the right place
-                response[ind] = {"value": letr, "color": "green"} # define it as green
-                letter_count[letr] -= 1 # subtract 1 from that letter's count
+        for ind, letr in user_guess_dict.items():  # for every letter in the guess
+            if letr == self.answer[ind]:  # if it's in the word and in the right place
+                response[ind] = {"value": letr, "color": "green"}  # define it as green
+                letter_count[letr] -= 1  # subtract 1 from that letter's count
 
-        for ind, letr in user_guess_dict.items(): # for every letter in the guess
-            if letr != self.answer[ind]: # if it's not already gone green
-                if letr in self.answer and letter_count[letr] != 0: # if the letter is in the word and the letter's count is not 0
-                    response[ind] = {"value": letr, "color": "yellow"} # define it as yellow
-                    letter_count[letr] -= 1 # subtract 1 from that letter's count
+        for ind, letr in user_guess_dict.items():  # for every letter in the guess
+            if letr != self.answer[ind]:  # if it's not already gone green
+                if letr in self.answer and letter_count[letr] != 0:  # if the letter is in the word and the letter's count is not 0
+                    response[ind] = {"value": letr, "color": "yellow"}  # define it as yellow
+                    letter_count[letr] -= 1  # subtract 1 from that letter's count
                 else:
-                    response[ind] = {"value": letr, "color": "red"} # define it as red
+                    response[ind] = {"value": letr, "color": "red"}  # define it as red
 
         response_string = ""
-        for key in sorted(response): # we need to sort the dictionary by the index - the dictinoary is ordered based on when the item was added, which will be based on the conditions above, as opposed to the order the user entered the characters
+        for key in sorted(response):  # we need to sort the dictionary by the index - the dictinoary is ordered based on when the item was added, which will be based on the conditions above, as opposed to the order the user entered the characters
             value_dictionary = response[key]
             if value_dictionary["color"] == "green":
                 response_string += (Back.GREEN)
@@ -138,6 +138,7 @@ class WordChecker:
             response_string += Fore.BLACK + value_dictionary["value"].upper()
 
         return response_string
+
 
 class Game:
     """
@@ -168,7 +169,7 @@ class Game:
                 print(f"{Fore.RED}Username must contain letters or numbers.\n")
             else:
                 break
-        print(f"{Fore.CYAN}\nHello {self.username}, welcome to Word-PY.\n") 
+        print(f"{Fore.CYAN}\nHello {self.username}, welcome to Word-PY.\n")
         self.user_menu()
 
     def user_menu(self):
@@ -250,10 +251,15 @@ class Game:
                 print(' \n')
                 print(pyfiglet.figlet_format(
                     "GAME OVER", justify="center", width=80))
-                print(f"The answer was....{Fore.YELLOW + Style.BRIGHT}{self.word_checker.answer.upper()}\n")
+                fore = Fore.YELLOW + Style.BRIGHT
+                upper_answer = self.word_checker.answer.upper()
+                print(f"The answer was....{fore}{upper_answer}\n")
                 self.play_again()
             else:
-                print(f"\nYou have {Fore.YELLOW + Style.BRIGHT}{self.no_of_chances}{Fore.RESET + Style.RESET_ALL} chances left.\n")
+                fore = Fore.YELLOW + Style.BRIGHT
+                chances = self.no_of_chances
+                reset = Fore.RESET + Style.RESET_ALL
+                print(f"\nYou have {fore}{chances}{reset} chances left.\n")
             while True:
                 user_input = input(
                     'Enter your 5 letter guess here:\n').lower().strip()
@@ -279,7 +285,7 @@ class Game:
 
         print(f"""\n{Fore.CYAN}\t\t\t      =====================\n""")
         for i in self.guesses_list:
-            print("\t\t\t\t    "+i)
+            print("\t\t\t\t      "+i)
         print(f"""\n{Fore.CYAN}\t\t\t      =====================""")
 
     def update_leaderboard(self, score):
@@ -310,7 +316,7 @@ class Game:
             by=['Date', 'Attempts'],
             ascending=[False, True])
         data_frame = data_frame.reset_index(drop=True)
-        data_frame.index = data_frame.index + 1 #start the index at 1 instead of 0
+        data_frame.index = data_frame.index + 1  # start the index at 1 instead of 0
         print(f"\n{Fore.CYAN}==============================\n")
         print(data_frame.head(10))
         print(f"\n{Fore.CYAN}==============================\n")
@@ -320,12 +326,10 @@ def main():
     """
     Run all program functions
     """
-
-    game = Game(WordChecker(get_answer_from_file()))
-
+    answer = get_answer_from_file()
+    game = Game(WordChecker(answer))
     # Start the Game introduction (show the rules, ask for a name)
     game.introduction()
-    # game.ask_for_guess()
 
 
 main()
