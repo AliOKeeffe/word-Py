@@ -157,7 +157,9 @@ class Game:
         """
         print(pyfiglet.figlet_format(
             "WELCOME TO WORD-PY", justify="center", width=80))
-        print(Fore.CYAN + "Can you guess the word in 6 tries?\n".center(80))
+        print(
+            Fore.CYAN + Style.BRIGHT +
+            "Can you guess the word in 6 tries?\n".center(80))
         while True:
             self.username = input(
                 "Please enter your name to begin.\n").strip().capitalize()
@@ -175,7 +177,8 @@ class Game:
         """
         print('Please choose from the following options:\n')
         user_option = input(
-            "P - PLAY\nI - INSTRUCTIONS\n").strip().lower()
+            f"{Fore.MAGENTA}P - PLAY\nI - INSTRUCTIONS{Fore.RESET}\n"
+            ).strip().lower()
 
         if user_option == "p":
             self.ask_for_guess()
@@ -213,15 +216,19 @@ class Game:
         """
         When the game ends ask the user if they wish to quit or play again
         """
+        print('Please choose from the following options:\n')
         user_choice = input(
-            "P - PLAY AGAIN\nL - LEADERBOARD\nQ - QUIT\n").strip().lower()
+            Fore.MAGENTA + "P - PLAY AGAIN\nL - LEADERBOARD\nQ - QUIT\n"
+            ).strip().lower()
 
         if user_choice == "p":
             os.system('clear')
             main()
 
         elif user_choice == "q":
-            print("Goodbye. Hope to see you soon")
+            print(" " + Fore.RESET)
+            print(pyfiglet.figlet_format(
+                    "Goodbye", justify="center", width=80))
             exit()
 
         elif user_choice == "l":
@@ -229,7 +236,7 @@ class Game:
             self.play_again()
 
         else:
-            print("Not a valid option")
+            print(Fore.RED+"Not a valid option\n")
             self.play_again()
 
     def ask_for_guess(self):
@@ -240,11 +247,13 @@ class Game:
         """
         while self.no_of_chances <= 6:
             if self.no_of_chances == 0:
-                print("\nGameover, No chances Left!\n")
-                print(f"The answer is....{self.word_checker.answer.upper()}\n")
+                print(' \n')
+                print(pyfiglet.figlet_format(
+                    "GAME OVER", justify="center", width=80))
+                print(f"The answer was....{Fore.YELLOW + Style.BRIGHT}{self.word_checker.answer.upper()}\n")
                 self.play_again()
             else:
-                print(f"\nYou have {self.no_of_chances} chances left.\n")
+                print(f"\nYou have {Fore.YELLOW + Style.BRIGHT}{self.no_of_chances}{Fore.RESET + Style.RESET_ALL} chances left.\n")
             while True:
                 user_input = input(
                     'Enter your 5 letter guess here:\n').lower().strip()
@@ -253,6 +262,9 @@ class Game:
                     self.display_guesses(user_input)
                     if user_input == self.word_checker.answer:
                         score = 6 - self.no_of_chances
+                        print(' \n')
+                        print(pyfiglet.figlet_format(
+                            "YOU WIN", justify="center", width=80))
                         print('\nWell done you got the correct answer!\n')
                         self.update_leaderboard(score)
                         self.play_again()
@@ -279,7 +291,7 @@ class Game:
         date_format = today.strftime("%d/%m/%Y")
         print('Updating leaderboard...\n')
         self.leaderboard.append_row([self.username, score, date_format])
-        print("Leaderboard Updated.\n")
+        print(Fore.CYAN + Style.BRIGHT + "Leaderboard Updated.\n")
 
     def show_leaderboard(self):
         """
