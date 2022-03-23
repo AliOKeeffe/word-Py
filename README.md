@@ -111,7 +111,7 @@ In order to visualise the flow of steps required in the game, I created a flow c
 - The definition of the word is displayed at the end of the game utilising the Oxford Dictionary API further.
 
 ## Data Model
-I used principles of Object Oriented Programming throughout this project. The WordPy game consists of three classes:
+I used principles of Object Oriented Programming throughout this project. The Word-Py game consists of three classes:
 
 - Game
 - WordChecker
@@ -127,7 +127,7 @@ When the game is first run, an initial method is used to retrieve an “answer�
 
 The Game class then renders the introduction screen and prompts the user for their first guess. User input is passed to WordChecker in which it’s validated and then used to return the colour-coded letters to the user via Game. Game will continue to ask the user for guesses using a while loop until the word has been correctly identified, or the max number of guesses are used.
 
-This modular approach to class and object definition meant that all of the logic was self contained, which made it easier to develop and also much easier to troubleshoot when things didn't work as initially expected.
+This modular approach to object definition meant that all of the functionality for running the game, checking the user guess and communicating with the Oxford API were all self contained within their own classes. This made it easier to develop and also much easier to troubleshoot when things didn't work as initially expected.
 
 ## Testing
 
@@ -191,18 +191,36 @@ The README.md was passed through Grammarly and all links were checked before fin
 
 ## Fixed Bugs
 
-### API Key and ID for Oxford Dictionary
-When I first started using the Oxford Dictionary API I was given a unique ID and Key for each API request. Given this data is sensitive, I couldn't store it in the main Python file. The approach we had used for the Google Sheets Credentials in the course content was quite different so I had to research the best way to do this for my project. I came across a really helpful slack post from anna_ci in the Code Institute slack channel https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500) which explains how to set up environment variables in GitPod and I was able to get the API working in my Gitpod terminal. However when I deployed my project to Heroku I could not get the API to work as Heroku could not access my my Key and ID in the gitignore file. I ran through the Love Sandwiches deployment procedures again and realised I need to add my Key and ID to the Config Vars in my app settings on Heroku and then the API functioned as expected. 
+### Guess Containing Two Instances of the Same Letter
 
-### Known Bugs
-letter stays orange even if it's green
+When I was testing the game I noticed that if I inputted a guess which contained two instances of the same letter (one of which was in the right position) and the answer only contained one instance of that particular letter; the correct instance of that letter would turn green as expected but the other instance would turn yellow when it should have been red. This is easier to illustrate through an example as below:
+
+![Fixed Bug](docs/readme_images/fixed_bug.png)
+
+In the example above, the first "E" should be red as it has already been guessed correctly but instead it is yellow.
+
+This reason for this was due to the for loop colour coding the first instance of the letter it encountered first and then when the second instance goes green the first instance remains unchanged. 
+
+This was a very complex problem to solve. Firstly I had to count the number of instances of each letter in the Answer. I found a post on stack overflow which detailed the Counter method from the Collections python library. Once I got the letter count, then each time a letter was guessed correctly I would deduct 1 from the letter count meaning that a second instance of the letter could not go yellow after it had already gone green. 
+
+I still had an issue whereby if the letter went yellow first - then the second instance could go green but the first yellow instance wouldn't change. To solve this; I had to create two for loops instead of one. The first would check if any of the letters should be green and the second would handle the yellow and red letters. 
+
+Now because I had two for loops, this resulted in duplicate guesses being printed out. To solve this, instead of adding the colour coded response to a string and printing it out immediately, firstly I had to add each guessed letter to a dictionary within a dictionary and add the colour of the letter as a key : value pair. Once the dictionary was created, I could then print out the colour coded string by looping through the dictionary and using an if/else statement to add the Colorama colours to each letter using the color value from the dictionary. 
+
+### Sorting the Dictionary
+
+After solving the problem above, I had a dictionary with the user guess and associated colours.
+I tested that the dictionary data was correct using print statements. I noticed that the dictionary was printing out the user guess letters in the wrong order. 
+
+This was because the dictionary was ordered based on when the letter was added to it. The letters were only added when the conditions for adding a colour were met, as opposed to the order the user entered the characters. 
+
+In order to solve this problem is used the sorted() method which sorted the dictionary by the letter index. 
+
+### API Key and ID for Oxford Dictionary
+When I first started using the Oxford Dictionary API I was given a unique ID and Key for each API request. Given this data is sensitive, I couldn't store it in the main Python file. The approach we had used for the Google Sheets Credentials in the course content was quite different so I had to research the best way to do this for my project. I came across a really helpful slack post from anna_ci in the Code Institute slack channel https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500) which explains how to set up environment variables in GitPod and I was able to get the API working in my Gitpod terminal. However when I deployed my project to Heroku I could not get the API to work as Heroku could not access my my Key and ID in the gitignore file. I ran through the Love Sandwiches deployment procedures again and realised I needed to add my Key and ID to the Config Vars in my app settings on Heroku and then the API functioned as expected. 
 
 ### Colour Coding Letters in User Guess
 Colorama is used to add the colour coding to each of the letters in the user guess. Each time a user makes a guess, that colour coded guess is added to the "guesses_list" so that all their guesses can be printed back to them after each turn. When I initially wrote the code to print out the user guesses list, the colours were not printing out and the Colorama encoding was being printed out along side the user guess making it impossible to read. After some research I realised that the colours would only print out as a string (not a list). In order to overcome this problem I used a "for loop" to print out each string in the "guesses_list" separately. 
-
-
-
-
 
 ## Deployment
 
@@ -236,6 +254,7 @@ The site is now live and operational.
 ### Resources Used
 - [W3Schools](https://www.w3schools.com/)  
 - [Stack Overflow](https://stackoverflow.com/)
+- [Count occurances of a character in a string](https://stackoverflow.com/questions/1155617/count-the-number-of-occurrences-of-a-character-in-a-string) - I read about the Collections Counter method in this post.
 - [How to set up environment variables in GitPod](https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500) - This post from anna_ci in the Code Institute slack channel was very informative and enabled me to set up my environment variables correctly for my API key. 
 - [ASCII Art](https://www.asciiart.eu/art-and-design/borders) - I used this ASCII art for the border around the instructions.
 - [How to get current date and time in Python](https://www.programiz.com/python-programming/datetime/current-datetime) - I used this article to learn about the strftime() method when getting the date for my leaderboard.
