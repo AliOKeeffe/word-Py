@@ -265,10 +265,10 @@ class Game:
         current_guess = self.word_checker.check_matching_letters(user_input)
         self.guesses_list.append(current_guess)
 
-        print(f"""\n{Fore.CYAN}\t=====================\n""")
+        print(f"""\n{Fore.CYAN}\t\t\t    =====================\n""")
         for i in self.guesses_list:
-            print("\t\t"+i)
-        print(f"""\n{Fore.CYAN}\t=====================""")
+            print("\t\t\t\t    "+i)
+        print(f"""\n{Fore.CYAN}\t\t\t    =====================""")
 
     def update_leaderboard(self, score):
         """
