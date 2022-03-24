@@ -30,7 +30,7 @@ SHEET = GSPREAD_CLIENT.open('word-Py-Leaderboard')
 
 def get_answer_from_file():
     """
-    Open txt file and get random word
+    Open text file and get random word for the game answer.
     """
     file = open('words.txt', 'r')
     lines = file.read().splitlines()
@@ -41,7 +41,8 @@ def get_answer_from_file():
 
 class OxfordDictAPI:
     """
-    checks user guess is an actual word in the Oxford Dict
+    Checks user guess is an actual word in the Oxford Dictionary using
+    their API.
     """
     def __init__(self):
         self.load_api_credentials()
@@ -50,8 +51,8 @@ class OxfordDictAPI:
 
     def check_in_dict(self, guess):
         """
-        look up the user guess in oxford dict.
-        Return the status code
+        Look up the user guess in Oxford English Dictionary.
+        Return the status code.
         """
         url = self.base_url + "/entries/en-gb/" + guess.lower()
         api_response = requests.get(url, headers=self.headers)
@@ -60,14 +61,10 @@ class OxfordDictAPI:
 
     def load_api_credentials(self):
         """
-        Get API credentials from env.py file
+        Get API credentials from env.py file.
         Credit post by anna_ci in code institute slack channel
         https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500
         """
-        # with open('oxford_api_credentials.json', 'r') as json_file:
-        #     credentials = json.load(json_file)
-        # self.app_id = credentials["app_id"]
-        # self.app_key = credentials["app_key"]
         self.app_id = os.environ["OXFORD_API_APP_ID"]
         self.app_key = os.environ["OXFORD_API_APP_KEY"]
 
@@ -78,18 +75,19 @@ class WordChecker:
     """
     def __init__(self, answer):
         self.answer = answer
-        # https://stackoverflow.com/questions/1155617/count-the-number-of-occurrences-of-a-character-in-a-string
 
     def validate_user_guess(self, guess):
         """
-        Checks that user guess is valid - 5 letters and an actual word
+        Check the user guess is valid.
+        Guess must be letters only, 5 letters in length and an actual word.
+        Raises ValueError if data is not valid.
         """
         try:
             if len(guess) != 5:
                 raise ValueError('That is not a 5 letter word.\n')
             elif guess.isalpha() is False:
                 raise ValueError('The game will only accept letters.\n')
-            # if the return status is 404(not found) then raise vaidation error
+            # if the return status is 404(not found) then raise ValueError
             elif OxfordDictAPI().check_in_dict(guess) == 404:
                 raise ValueError(
                     'Guess must be a word in the Oxford English Dictionary.\n'
@@ -102,8 +100,11 @@ class WordChecker:
 
     def check_matching_letters(self, user_guess):
         """
-        Compare user guess against answer
+        Compare user guess against answer and apply colour-codes based on
+        accuracy of guess.
         """
+
+        # Credit: https://stackoverflow.com/questions/1155617/count-the-number-of-occurrences-of-a-character-in-a-string
         letter_count = Counter(self.answer)
 
         user_guess_dict = {
@@ -112,20 +113,30 @@ class WordChecker:
 
         response = {}
 
-        for ind, letr in user_guess_dict.items():  # for every letter in the guess
-            if letr == self.answer[ind]:  # if it's in the word and in the right place
-                response[ind] = {"value": letr, "color": "green"}  # define it as green
-                letter_count[letr] -= 1  # subtract 1 from that letter's count
+        # for every letter in the guess
+        for ind, letr in user_guess_dict.items():
+            # if it's in the word and in the right place define it as green
+            if letr == self.answer[ind]:
+                response[ind] = {"value": letr, "color": "green"}
+                # subtract 1 from that letter's count
+                letter_count[letr] -= 1
 
-        for ind, letr in user_guess_dict.items():  # for every letter in the guess
-            if letr != self.answer[ind]:  # if it's not already gone green
-                if letr in self.answer and letter_count[letr] != 0:  # if the letter is in the word and the letter's count is not 0
-                    response[ind] = {"value": letr, "color": "yellow"}  # define it as yellow
-                    letter_count[letr] -= 1  # subtract 1 from that letter's count
+        # for every letter in the guess
+        for ind, letr in user_guess_dict.items():
+            # if it's not in the right place and
+            if letr != self.answer[ind]:
+                # if the letter is in the word and the letter's count is not 0
+                if letr in self.answer and letter_count[letr] != 0:
+                    # define it as yellow
+                    response[ind] = {"value": letr, "color": "yellow"}
+                    # subtract 1 from that letter's count
+                    letter_count[letr] -= 1
                 else:
-                    response[ind] = {"value": letr, "color": "red"}  # define it as red
+                    # define it as red
+                    response[ind] = {"value": letr, "color": "red"}
 
         response_string = ""
+        #
         for key in sorted(response):  # we need to sort the dictionary by the index - the dictinoary is ordered based on when the item was added, which will be based on the conditions above, as opposed to the order the user entered the characters
             value_dictionary = response[key]
             if value_dictionary["color"] == "green":
@@ -184,7 +195,7 @@ class Game:
             self.ask_for_guess()
 
         elif user_option == "i":
-                    #  https://www.asciiart.eu/art-and-design/borders
+            #  Credit: https://www.asciiart.eu/art-and-design/borders
             intro_message = """
              __| |____________________________________________| |__
             (__   ____________________________________________   __)
