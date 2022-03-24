@@ -207,7 +207,7 @@ The README.md was passed through Grammarly and all links were checked before fin
 - [random](https://docs.python.org/3/library/random.html?highlight=random#module-random) - `random.choice` is used to select a random word for the game from a text file.
 - [os](https://docs.python.org/3/library/os.html?highlight=os#module-os) 
   - `os.system` is used in order to clear the terminal when beginning a new game.
-  - `os.eviron` is used to get API keys and id from env.py file UPDATE THIS WORDING.
+  - `os.environ` is used to get Oxford API credentials from environment variables (defined in env.py).
 - [datetime](https://pypi.org/project/DateTime/): used to get today's date for the leaderboard entry.
 - [gspread](https://pypi.org/project/gspread/): to allow communication with Google Sheets. 
 - [requests](https://pypi.org/project/requests): enables data retrieval from APIs.
@@ -224,6 +224,19 @@ The README.md was passed through Grammarly and all links were checked before fin
 - [PEP8 Online](http://pep8online.com/) - used to validate all the Python code
 - [Grammerly]
 
+
+## Known Bugs
+
+I am receiving the following linter error:
+```
+"env" imported but unused
+```
+in GitPod for line 9 in oxford_api.py:
+```python
+if path.exists("env.py"):
+    import env
+```
+I am conditionally importing `env.py` when the file exists to ensure I don't need to commit my Oxford API credentials to GitHub. This error message is erroneous as I'm using the import as required.
 
 ## Fixed Bugs
 
