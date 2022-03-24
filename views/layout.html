@@ -8,10 +8,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/addons/attach/attach.js"></script>
-    <title>Python Terminal by Code Institute</title>
+    <title>Word-Py</title>
     <style>
         body {
             font-family: Arial;
+            background: black;
+            text-align: center;
         }
 
         /**
@@ -21,6 +23,7 @@
         .xterm {
             font-feature-settings: "liga"0;
             position: relative;
+            margin-top: 40px;
             user-select: none;
             -ms-user-select: none;
             -webkit-user-select: none;
@@ -89,6 +92,8 @@
 
         .xterm .xterm-screen {
             position: relative;
+            margin: 0 auto;
+            border: 1px solid cyan;
         }
 
         .xterm .xterm-screen canvas {
@@ -158,9 +163,9 @@
         button {
             width: 200px;
             height: 40px;
-            background-color: #E84610;
+            background-color: cyan;
             border: 1px solid grey;
-            color: white;
+            color: black;
             text-transform: uppercase;
             margin: 10px;
             border-radius: 8px;
