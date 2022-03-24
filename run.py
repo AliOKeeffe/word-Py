@@ -89,12 +89,12 @@ class WordChecker:
             if len(guess) != 5:
                 raise ValueError('That is not a 5 letter word.\n')
             elif guess.isalpha() is False:
-                raise ValueError('Please only enter letters not numbers.\n')
+                raise ValueError('The game will only accept letters.\n')
             # if the return status is 404(not found) then raise vaidation error
-            # elif OxfordDictAPI().check_in_dict(guess) == 404:
-            #     raise ValueError(
-            #         'Guess must be a word as per the Oxford Dictionary.\n'
-            #         )
+            elif OxfordDictAPI().check_in_dict(guess) == 404:
+                raise ValueError(
+                    'Guess must be a word as per the Oxford Dictionary.\n'
+                    )
         except ValueError as error:
             print(f'{Fore.RED}Invalid data: {error}Please try again. \n')
             return False

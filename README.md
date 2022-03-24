@@ -45,21 +45,35 @@ In order to visualise the flow of steps required in the game, I created a flow c
 ### Title and Introduction Section
 - When the user enters the site they are greeted with a very simple page welcoming them to the game and asking them for their name. 
 - The welcome text was creating using Pyfiglet which takes ASCII text and renders it into ASCII art fonts. 
+
+![Welcome Screen](docs/readme_images/welcome_screen.png)
+
 - There is strong data validation on the username input. The user must enter a username consisting of numbers or letters. They cannot just enter a blank space. If they do not enter valid data, an error message will appear in red saying "Username must contain letters or numbers." and they will be asked to input their name again.
+
+![Username Validation](docs/readme_images/username_validation.png)
 
 ### Options menu
 - When the user enters their name the computer will welcome them to the game and repeat their name back to them. 
 - They will be asked if they would like to Play or read the Instructions by inputting "P" or "I".
+
+![User Menu](docs/readme_images/user_menu.png)
+
 - It doesn't matter if their input is lower or upper case. The computer can handle both inputs by using the inbuilt function, lower().
 - If the user does not input a "P" or an "I" they will get an error message asking them to input a valid option.
+
+![User Menu](docs/readme_images/menu_input_error.png)
 
 ### Instructions
 - If the user keys in "I" and presses enter they will be show the game instructions. 
 - The instructions are surrounded by a scroll like border to make them clear and easy to read and to add an element of fun. 
 - The game will begin immediately below the instructions.
 
+![User Menu](docs/readme_images/instructions.png)
+
 ### Game Features
 - The user is informed that they have 6 chances and they are asked to enter a 5 letter guess. 
+
+![Play Game](docs/readme_images/play_game.png)
 
 ### Guess Input Validation and Error Handling
 - The following input validation is carried out on the user guess:
