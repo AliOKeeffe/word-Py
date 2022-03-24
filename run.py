@@ -178,7 +178,7 @@ class Game:
         """
         print('Please choose from the following options:\n')
         user_option = input(
-            f"{Fore.MAGENTA}P - PLAY\nI - INSTRUCTIONS{Fore.RESET}\n"
+            f"{Fore.BLUE}P - PLAY\nI - INSTRUCTIONS{Fore.RESET}\n"
             ).strip().lower()
 
         if user_option == "p":
@@ -187,26 +187,26 @@ class Game:
         elif user_option == "i":
                     #  https://www.asciiart.eu/art-and-design/borders
             intro_message = """
-         __| |____________________________________________| |__
-        (__   ____________________________________________   __)
-           | |                                            | |
-           | |               How to Play                  | |
-           | |                                            | |
-           | |    Guess the word in SIX or less tries     | |
-           | |                                            | |
-           | |  Each guess MUST be a valid 5 letter word  | |
-           | |                                            | |
-           | | After each guess, the color of the letters | |
-           | |   will change to show how close your guess | |
-           | |              was to the word!              | |
-           | |                                            | |
-           | |   Green is a correct letter and position   | |
-           | | Yellow is a correct letter, wrong position | |
-           | |           Red is a wrong letter            | |
-         __| |____________________________________________| |__
-        (__   ____________________________________________   __)
-           | |                                            | |
-        """
+             __| |____________________________________________| |__
+            (__   ____________________________________________   __)
+               | |                                            | |
+               | |               How to Play                  | |
+               | |                                            | |
+               | |    Guess the word in SIX or less tries     | |
+               | |                                            | |
+               | |  Each guess MUST be a valid 5 letter word  | |
+               | |                                            | |
+               | | After each guess, the color of the letters | |
+               | |   will change to show how close your guess | |
+               | |              was to the word!              | |
+               | |                                            | |
+               | |   Green is a correct letter and position   | |
+               | | Yellow is a correct letter, wrong position | |
+               | |           Red is a wrong letter            | |
+             __| |____________________________________________| |__
+            (__   ____________________________________________   __)
+               | |                                            | |
+            """
             print(intro_message)
             self.ask_for_guess()
         else:
@@ -219,7 +219,7 @@ class Game:
         """
         print('Please choose from the following options:\n')
         user_choice = input(
-            Fore.MAGENTA + "P - PLAY AGAIN\nL - LEADERBOARD\nQ - QUIT\n"
+            Fore.BLUE + "P - PLAY AGAIN\nL - LEADERBOARD\nQ - QUIT\n"
             ).strip().lower()
 
         if user_choice == "p":
