@@ -56,7 +56,7 @@ class OxfordDictAPI:
         """
         url = self.base_url + "/entries/en-gb/" + guess.lower()
         api_response = requests.get(url, headers=self.headers)
-        print("code {}\n".format(api_response.status_code))
+        # print("code {}\n".format(api_response.status_code))
         return api_response.status_code
 
     def load_api_credentials(self):
@@ -93,10 +93,10 @@ class WordChecker:
             # if the return status is 404(not found) then raise vaidation error
             elif OxfordDictAPI().check_in_dict(guess) == 404:
                 raise ValueError(
-                    'Guess must be a word as per the Oxford Dictionary.\n'
+                    'Guess must be a word in the Oxford English Dictionary.\n'
                     )
         except ValueError as error:
-            print(f'{Fore.RED}Invalid data: {error}Please try again. \n')
+            print(f'\n{Fore.RED}Invalid data: {error}Please try again. \n')
             return False
 
         return True
@@ -178,7 +178,7 @@ class Game:
         """
         print('Please choose from the following options:\n')
         user_option = input(
-            f"{Fore.BLUE}P - PLAY\nI - INSTRUCTIONS{Fore.RESET}\n"
+            f"{Fore.CYAN}P - PLAY\nI - INSTRUCTIONS{Fore.RESET}\n"
             ).strip().lower()
 
         if user_option == "p":
@@ -219,7 +219,7 @@ class Game:
         """
         print('Please choose from the following options:\n')
         user_choice = input(
-            Fore.BLUE + "P - PLAY AGAIN\nL - LEADERBOARD\nQ - QUIT\n"
+            Fore.CYAN + "P - PLAY AGAIN\nL - LEADERBOARD\nQ - QUIT\n"
             ).strip().lower()
 
         if user_choice == "p":

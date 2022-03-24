@@ -59,12 +59,12 @@ In order to visualise the flow of steps required in the game, I created a flow c
 ![User Menu](docs/readme_images/user_menu.png)
 
 - It doesn't matter if their input is lower or upper case. The computer can handle both inputs by using the inbuilt function, lower().
-- If the user does not input a "P" or an "I" they will get an error message asking them to input a valid option.
+- If the user does not input a "P", "p", "I" or an "i" they will get an error message asking them to input a valid option.
 
 ![User Menu](docs/readme_images/menu_input_error.png)
 
 ### Instructions
-- If the user keys in "I" and presses enter they will be show the game instructions. 
+- If the user keys in "I" and presses enter they will be shown the game instructions. 
 - The instructions are surrounded by a scroll like border to make them clear and easy to read and to add an element of fun. 
 - The game will begin immediately below the instructions.
 
@@ -81,7 +81,9 @@ In order to visualise the flow of steps required in the game, I created a flow c
   - The guess must be all letters.
   - The guess must be an actual word in the Oxford English Dictionary. This validation is done using the Oxford dictionary API. 
 - If the user input is not valid, the user will be given feedback on the error and will be asked to input their guess again.
-  
+
+![Guess Validation](docs/readme_images/guess_validation.png)
+
 ### Oxford Dictionary API
 - The Oxford Dictionaries API offers access to Oxford's dictionary content. 
 - When I created an account I was given a unique App ID and App Key. These are then passed as authentication headers for each API request.
