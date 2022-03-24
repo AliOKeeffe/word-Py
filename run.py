@@ -229,7 +229,7 @@ class Game:
         elif user_choice == "q":
             print(" " + Fore.RESET)
             print(pyfiglet.figlet_format(
-                    "Goodbye", justify="center", width=80))
+                    "GOODBYE", justify="center", width=80))
             exit()
 
         elif user_choice == "l":
@@ -317,9 +317,9 @@ class Game:
             ascending=[False, True])
         data_frame = data_frame.reset_index(drop=True)
         data_frame.index = data_frame.index + 1  # start the index at 1 instead of 0
-        print(f"\n{Fore.CYAN}==============================\n")
+        print(f"\n{Fore.CYAN}===============================\n")
         print(data_frame.head(10))
-        print(f"\n{Fore.CYAN}==============================\n")
+        print(f"\n{Fore.CYAN}===============================\n")
 
 
 def main():
