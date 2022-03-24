@@ -1,20 +1,18 @@
-from os import path
+"""
+TBD
+"""
 from datetime import date
 import os  # import to clear terminal
 import random  # import random to get random word for game
 import gspread  # import gpsread
 from google.oauth2.service_account import Credentials
-import requests
 import pyfiglet  # import Acsii art library - pyfiglet
 import pandas as pd
 import colorama  # import colorama for colour coding letters
-from colorama import Fore, Back, Style
-from collections import Counter
+from colorama import Fore, Style
+from word_checker import WordChecker
 
 colorama.init(autoreset=True)
-
-if path.exists("env.py"):
-    import env
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -32,127 +30,19 @@ def get_answer_from_file():
     """
     Open text file and get random word for the game answer.
     """
-    file = open('words.txt', 'r')
+    file = open('words.txt', 'r', encoding='utf-8')
     lines = file.read().splitlines()
-    file.close
     random_word = random.choice(lines)
     return random_word.lower()
 
 
-class OxfordDictAPI:
-    """
-    Checks user guess is an actual word in the Oxford Dictionary using
-    their API.
-    """
-    def __init__(self):
-        self.load_api_credentials()
-        self.base_url = "https://od-api.oxforddictionaries.com/api/v2"
-        self.headers = {"app_id": self.app_id, "app_key": self.app_key}
-
-    def check_in_dict(self, guess):
-        """
-        Look up the user guess in Oxford English Dictionary.
-        Return the status code.
-        """
-        url = self.base_url + "/entries/en-gb/" + guess.lower()
-        api_response = requests.get(url, headers=self.headers)
-        # print("code {}\n".format(api_response.status_code))
-        return api_response.status_code
-
-    def load_api_credentials(self):
-        """
-        Get API credentials from env.py file.
-        Credit post by anna_ci in code institute slack channel
-        https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500
-        """
-        self.app_id = os.environ["OXFORD_API_APP_ID"]
-        self.app_key = os.environ["OXFORD_API_APP_KEY"]
-
-
-class WordChecker:
-    """
-    Creates an instance of WordChecker
-    """
-    def __init__(self, answer):
-        self.answer = answer
-
-    def validate_user_guess(self, guess):
-        """
-        Check the user guess is valid.
-        Guess must be letters only, 5 letters in length and an actual word.
-        Raises ValueError if data is not valid.
-        """
-        try:
-            if len(guess) != 5:
-                raise ValueError('That is not a 5 letter word.\n')
-            elif guess.isalpha() is False:
-                raise ValueError('The game will only accept letters.\n')
-            # if the return status is 404(not found) then raise ValueError
-            elif OxfordDictAPI().check_in_dict(guess) == 404:
-                raise ValueError(
-                    'Guess must be a word in the Oxford English Dictionary.\n'
-                    )
-        except ValueError as error:
-            print(f'\n{Fore.RED}Invalid data: {error}Please try again. \n')
-            return False
-
-        return True
-
-    def check_matching_letters(self, user_guess):
-        """
-        Compare user guess against answer and apply colour-codes based on
-        accuracy of guess.
-        """
-
-        # Credit: https://stackoverflow.com/questions/1155617/count-the-number-of-occurrences-of-a-character-in-a-string
-        letter_count = Counter(self.answer)
-
-        user_guess_dict = {
-            index: value for index, value in enumerate(user_guess)
-            }
-
-        response = {}
-
-        # for every letter in the guess
-        for ind, letr in user_guess_dict.items():
-            # if it's in the word and in the right place define it as green
-            if letr == self.answer[ind]:
-                response[ind] = {"value": letr, "color": "green"}
-                # subtract 1 from that letter's count
-                letter_count[letr] -= 1
-
-        # for every letter in the guess
-        for ind, letr in user_guess_dict.items():
-            # if it's not in the right place and
-            if letr != self.answer[ind]:
-                # if the letter is in the word and the letter's count is not 0
-                if letr in self.answer and letter_count[letr] != 0:
-                    # define it as yellow
-                    response[ind] = {"value": letr, "color": "yellow"}
-                    # subtract 1 from that letter's count
-                    letter_count[letr] -= 1
-                else:
-                    # define it as red
-                    response[ind] = {"value": letr, "color": "red"}
-
-        response_string = ""
-        #
-        for key in sorted(response):  # we need to sort the dictionary by the index - the dictinoary is ordered based on when the item was added, which will be based on the conditions above, as opposed to the order the user entered the characters
-            value_dictionary = response[key]
-            if value_dictionary["color"] == "green":
-                response_string += (Back.GREEN)
-            elif value_dictionary["color"] == "yellow":
-                response_string += (Back.YELLOW)
-            elif value_dictionary["color"] == "red":
-                response_string += (Back.RED)
-            response_string += Fore.BLACK + value_dictionary["value"].upper()
-
-        return response_string
-
-
 class Game:
     """
-    Creates and instance of the game
+    This class is responsible for controlling the flow of the game. It handles
+    things like taking the user input and presenting data back to the user.
+    It contains methods for the general running of the game such as displaying
+    the introduction, displaying user options, taking user guesses, displaying
+    guesses, updating the leader board and displaying the leader board.
     """
 
     def __init__(self, word_checker):
@@ -164,7 +54,9 @@ class Game:
 
     def introduction(self):
         """
-        Introduction Message
+        Display introduction message and ask for username.
+        Return error message if blank space is entered.
+        Greet the user by their username.
         """
         print(pyfiglet.figlet_format(
             "WELCOME TO WORD-PY", justify="center", width=80))
@@ -185,6 +77,7 @@ class Game:
     def user_menu(self):
         """
         Ask the user if the wish to play or see the instructions.
+        Return an error message if user inputs an invalid selection.
         """
         print('Please choose from the following options:\n')
         user_option = input(
@@ -220,12 +113,14 @@ class Game:
             print(intro_message)
             self.ask_for_guess()
         else:
-            print(Fore.RED+"Not a valid option\n")
+            print(Fore.RED + "Not a valid option\n")
             self.user_menu()
 
     def play_again(self):
         """
-        When the game ends ask the user if they wish to quit or play again
+        When the game ends ask the user if they wish to quit,
+        view the leaderboard or play again.
+        Return an error message if user inputs invalid selection.
         """
         print('Please choose from the following options:\n')
         user_choice = input(
@@ -252,9 +147,11 @@ class Game:
 
     def ask_for_guess(self):
         """
-        Ask the user for their guess if they have chances remaining,
-        if not the the game is over.
-        If the user guesses correctly as them if they wish to play again.
+        Run a while loop to collect a valid guess from the user if they have
+        chances remaining.
+        If the user has no chances the the game is over.
+        If the user guesses correctly, they win and leaderboard is updated.
+        Display the game over menu.
         """
         while self.no_of_chances <= 6:
             if self.no_of_chances == 0:
@@ -288,7 +185,8 @@ class Game:
 
     def display_guesses(self, user_input):
         """
-        Display the users guess one after the other with colors
+        Display the user's guess and previous guesses one after the
+        other with color-codes.
         """
         current_guess = self.word_checker.check_matching_letters(user_input)
         self.guesses_list.append(current_guess)
@@ -300,10 +198,9 @@ class Game:
 
     def update_leaderboard(self, score):
         """
-        Add name, score and date to row in leaderboard spreadsheet
+        Add name, score and date to row in leaderboard Google Sheet.
         """
         today = date.today()
-        # https://www.programiz.com/python-programming/datetime/current-datetime
         date_format = today.strftime("%d/%m/%Y")
         print('Updating leaderboard...\n')
         self.leaderboard.append_row([self.username, score, date_format])
@@ -311,8 +208,10 @@ class Game:
 
     def show_leaderboard(self):
         """
-        Sort the leaderboard by date and then by number of attempts using
-        Pandas then Show the top 10 entries in the leaderboard
+        Get the leaderboard data from Google Sheets.
+        Sort the leaderboard by date and then by number of attempts with Pandas
+        Reset the table index and start it at 1.
+        Show the top 10 entries in the leaderboard.
         Credit: https://realpython.com/pandas-sort-python/
         """
         scores = self.leaderboard.get_all_values()
@@ -320,13 +219,13 @@ class Game:
         data = scores[1:]
 
         data_frame = pd.DataFrame(data, columns=columns)
-        # https://www.tutorialspoint.com/python-center-align-column-headers-of-a-pandas-dataframe
+
         pd.set_option('display.colheader_justify', 'center')
         data_frame = data_frame.sort_values(
             by=['Date', 'Attempts'],
             ascending=[False, True])
         data_frame = data_frame.reset_index(drop=True)
-        data_frame.index = data_frame.index + 1  # start the index at 1 instead of 0
+        data_frame.index = data_frame.index + 1
         print(f"\n{Fore.CYAN}===============================\n")
         print(data_frame.head(10))
         print(f"\n{Fore.CYAN}===============================\n")
@@ -334,11 +233,13 @@ class Game:
 
 def main():
     """
-    Run all program functions
+    Retrieve an answer string from the words.txt file. Create a new instance of
+    WordChecker, passing the answer as an parameter. Create a new instance of
+    Game, passing the WordChecker instance as a parameter.
+    Start the game using the introduction() method.
     """
     answer = get_answer_from_file()
     game = Game(WordChecker(answer))
-    # Start the Game introduction (show the rules, ask for a name)
     game.introduction()
 
 
