@@ -1,12 +1,12 @@
 """
-Wordchecker Class
+Defines the Wordchecker class, which is responsible for all actions related to
+checking the user-provided "guess" input against the generated "answer".
 """
 
 from collections import Counter
 import colorama
 from colorama import Fore, Back
-
-from oxford_api import OxfordDictAPI
+from modules.oxford_api import OxfordDictAPI
 
 colorama.init(autoreset=True)
 

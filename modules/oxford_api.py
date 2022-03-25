@@ -1,5 +1,6 @@
 """
-Oxford Dictionaries API Class
+Defines the OxfordDictAPI class, which handles the communication with the
+Oxford Dictionaries API.
 """
 
 import os

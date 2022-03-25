@@ -1,6 +1,6 @@
 """
-A brief description of the module and its purpose
-A list of any classes, exception, functions, and any other objects exported by the module
+Defines the main() function which starts the game, along with the Game class
+which is responsible for controlling the flow of the game.
 """
 
 from datetime import date
@@ -12,7 +12,7 @@ import pyfiglet
 import pandas as pd
 import colorama
 from colorama import Fore, Style
-from word_checker import WordChecker
+from modules.word_checker import WordChecker
 
 colorama.init(autoreset=True)
 
