@@ -25,18 +25,22 @@ The live link can be found here - [Word-Py](https://word-py.herokuapp.com/)
 ## User Stories
 
 - ### As a user I want to:
-  - understand the main purpose of the game.
-  - be kept engaged throughout the game by being provided with easy to understand hints as to how close my guess was to the answer.
-  - be challenged by having to come up with an actual word and not just inputting random letters.
-  - see how many turns I have left.
-  - find out the answer if I am not successful.
-  - compare my score to others on the leaderboard.
-  - try and beat my score on the leaderboard
-  - get a new word each time I play.
+  - Understand the main purpose of the game.
+  - Be kept engaged throughout the game by being provided with easy to understand hints as to how close my guess was to the answer.
+  - Be challenged by having to come up with an actual word and not just inputting random letters.
+  - See how many turns I have left.
+  - Find out the answer if I am not successful.
+  - Compare my score to others on the leaderboard.
+  - Try and beat my score on the leaderboard
+  - Get a new word each time I play.
 
 
 ## Logic Flow
-In order to visualise the flow of steps required in the game, I created a flow chart using Lucid Chart. It was beneficial for me to plan the project like this as it allowed me to gain an understanding of what functions were required for the game and at what stages and how the different elements of the game would interact. As the flow chart was created at the outset of the project, it does not fully reflect all elements of the game.
+In order to visualise the flow of steps required in the game, I created a flow chart using Lucid Chart. It was beneficial for me to plan the project like this as it allowed me to gain an understanding of what functions were required for the game and at what stages and how the different elements of the game would interact.
+
+It also allowed me to identify the different Objects I would need to implement. I was keen to use the principles of Object Oriented Programming in this application.
+
+As the flow chart was created at the outset of the project, it does not fully reflect all elements of the game.
 
 ![Flow Chart](docs/readme_images/flow_chart.png)
 
@@ -147,21 +151,21 @@ In order to visualise the flow of steps required in the game, I created a flow c
 - The definition of the word is displayed at the end of the game further utilising the Oxford Dictionary API.
 
 ## Data Model
-I used principles of Object-Oriented Programming throughout this project. The Word-Py game consists of three classes:
+I used principles of **Object-Oriented Programming** throughout this project. The Word-Py game consists of three classes:
 
 - Game
 - WordChecker
 - OxfordDictAPI
 
-The Game object is responsible for controlling the flow of the game. It handles things like taking the user input and presenting data back to the user. It contains methods for the general running of the game such as displaying the introduction, displaying user options, taking user guesses, displaying guesses, updating the leader board and displaying the leader board.
+The `Game` object is responsible for controlling the flow of the game. It handles things like taking the user input and presenting data back to the user. It contains methods for the general running of the game such as displaying the introduction, displaying user options, taking user guesses, displaying guesses, updating the leader board and displaying the leader board.
 
-The WordChecker object is responsible for all actions related to checking the user-provided "guess" input against the generated "answer". This includes validating the input, handling any errors and building the colour-coded response which is returned to the Game instance.
+The `WordChecker` object is responsible for all actions related to checking the user-provided "guess" input against the generated "answer". This includes validating the input, handling any errors and building the colour-coded response which is returned to the `Game` instance.
 
-The OxfordDictAPI object communicates with the [Oxford Dictionaries API](https://developer.oxforddictionaries.com/). This class gets the API credentials from the env.py file and sends a request against this API to ensure the user-provided guess is a valid English word (it exists in the Oxford English Dictionary).
+The `OxfordDictAPI` object communicates with the [Oxford Dictionaries API](https://developer.oxforddictionaries.com/). This class gets the API credentials from the env.py file and sends a request against this API to ensure the user-provided guess is a valid English word (it exists in the Oxford English Dictionary).
 
-When the game is first run, an initial method is used to retrieve an “answer” word from a text file. This word is then passed as a parameter when creating the WordChecker instance. This WordChecker instance is then passed as a parameter to the Game instance.
+When the game is first run, an initial method is used to retrieve an “answer” word from a text file. This word is then passed as a parameter when creating the `WordChecker` instance. This `WordChecker` instance is then passed as a parameter to the `Game` instance.
 
-The Game class then renders the introduction screen and prompts the user for their first guess. User input is passed to WordChecker in which it’s validated and then used to return the colour-coded letters to the user via Game. Game will continue to ask the user for guesses using a while loop until the word has been correctly identified, or the max number of guesses are used.
+The `Game` class then renders the introduction screen and prompts the user for their first guess. User input is passed to `WordChecker` in which it’s validated and then used to return the colour-coded letters to the user via `Game`. `Game` will continue to ask the user for guesses using a while loop until the word has been correctly identified, or the max number of guesses are used.
 
 This modular approach to object definition meant that all of the functionality for running the game, checking the user guess and communicating with the Oxford API were all self-contained within their own classes. This made it easier to develop and also much easier to troubleshoot when things didn't work as initially expected.
 
@@ -170,7 +174,23 @@ This modular approach to object definition meant that all of the functionality f
 ### PEP8 Testing
 The python files have all been passed through [PEP8 Online](http://pep8online.com/). All python files were checked with no errors reported. See screen show below:
 
-INSERT SCREENSHOT OF PEP8
+<details>
+  <summary>run.py</summary>
+
+  ![Run](docs/readme_images/pep8_run.png)
+</details>
+
+<details>
+  <summary>word_checker.py</summary>
+
+  ![WordChecker](docs/readme_images/pep8_wordchecker.png)
+</details>
+
+<details>
+  <summary>oxford_api.py</summary>
+
+  ![OxfordAPI](docs/readme_images/pep8_oxford_api.png)
+</details>
 
 ### Input Testing
 All user inputs were tested thoroughly to ensure all input data is handled correctly and appropriate feedback is given to the user as follows:
@@ -197,8 +217,7 @@ The game was tested thoroughly to ensure the following features worked as intend
 
 All of the above tests were completed in my local terminal and also in the Heroku terminal.
 
-The README.md was passed through Grammarly and all links were checked before final submission.
-
+The README.md was passed through Grammarly and all links were checked before final submission
 
 ## Libraries and Technologies Used
 
@@ -236,7 +255,7 @@ in GitPod for line 9 in oxford_api.py:
 if path.exists("env.py"):
     import env
 ```
-I am conditionally importing `env.py` when the file exists to ensure I don't need to commit my Oxford API credentials to GitHub. This error message is erroneous as I'm using the import as required.
+I am conditionally importing `env.py` when the file exists to ensure I don't need to commit my Oxford API credentials to GitHub. I'm not aware of any other way to achieve this. The import gives me access to the required variables without having to commit them to GitHub.
 
 ## Fixed Bugs
 
@@ -248,14 +267,13 @@ When I was testing the game I noticed that if I inputted a guess which contained
 
 In the example above, the first "E" should be red as it has already been guessed correctly but instead, it is yellow.
 
-This was because when the `for loop` first encounters the letter "E" the program won't know if it will encounter that letter again in subsequent loops and therefore has to colour it yellow. When the `for loop` encounters the next "E" it correctly colours it green however it cannot go back and change the first instance of "E" retroactively meaning it will stay yellow. 
+This was because when the `for` loop first encounters the letter "E" the program won't know if it will encounter that letter again in subsequent loops and therefore has to colour it yellow. When the `for` loop encounters the next "E" it correctly colours it green however it cannot go back and change the first instance of "E" retroactively meaning it will stay yellow. 
 
 This was a very complex problem to solve. Firstly I had to count the number of instances of each letter in the Answer. I found a post on stack overflow which detailed the Counter method from the Collections python library. Once I got the letter count, then each time a letter was guessed correctly I would deduct 1 from the letter count meaning that a second instance of the letter could not go yellow after it had already gone green. 
 
-I still had an issue whereby if the letter went yellow first - then the second instance could go green but the first yellow instance would remain yellow. To solve this; I had to create two `for loops` instead of one. The first would check if any of the letters should be green and the second would handle the yellow and red letters. 
+I still had an issue whereby if the letter went yellow first - then the second instance could go green but the first yellow instance would remain yellow. To solve this; I had to create two `for` loops instead of one. The first would check if any of the letters should be green and the second would handle the yellow and red letters. 
 
-Now because I had two `for loops`, this resulted in duplicate guesses being printed out. To solve this, instead of adding the colour coded response to a string and printing it out immediately, I had to add each guessed letter to a dictionary within a dictionary using the letter index as the key and add the colour of the letter and the letter itself as key : value pairs. Once the dictionary was created, I could then print out the colour coded string by looping through the dictionary and using an if/else statement to add the Colorama colours to each letter using the colour value from the dictionary. 
-
+Now because I had two `for` loops, this resulted in duplicate guesses being printed out. To solve this, instead of adding the colour coded response to a string and printing it out immediately, I had to add each guessed letter to a dictionary within a dictionary using the letter index as the key and add the colour of the letter and the letter itself as key : value pairs. Once the dictionary was created, I could then print out the colour coded string by looping through the dictionary and using an if/else statement to add the Colorama colours to each letter using the colour value from the dictionary. 
 
 ### Sorting the Dictionary
 
@@ -266,10 +284,16 @@ This was because the dictionary was ordered based on when the letter was added t
 In order to solve this problem is used the sorted() method which sorted the dictionary by the letter index. 
 
 ### API Key and ID for Oxford Dictionary
-When I first started using the Oxford Dictionary API I was given a unique ID and Key for each API request. Given this data is sensitive, I couldn't store it in the main Python file. The approach we had used for the Google Sheets Credentials in the course content was quite different so I had to research the best way to do this for my project. I came across a really helpful slack post from anna_ci in the Code Institute slack channel https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500) which explains how to set up environment variables in GitPod and I was able to get the API working in my Gitpod terminal. However, when I deployed my project to Heroku I could not get the API to work as Heroku could not access my Key and ID in the gitignore file. I ran through the Love Sandwiches deployment procedures again and realised I needed to add my Key and ID to the Config Vars in my app settings on Heroku and then the API functioned as expected. 
+When I first started using the Oxford Dictionary API I was given a unique ID and Key for each API request. Given this data is sensitive, I couldn't store it in the main Python file.
+
+The approach we had used for the Google Sheets Credentials in the course content was quite different so I had to research the best way to do this for my project. I came across a really helpful slack post from anna_ci in the Code Institute slack channel https://code-institute-room.slack.com/archives/CP07TN38Q/p1576743956008500) which explains how to set up environment variables in GitPod and I was able to get the API working in my Gitpod terminal. However, when I deployed my project to Heroku I could not get the API to work as Heroku could not access my Key and ID in the gitignore file.
+
+I ran through the Love Sandwiches deployment procedures again and realised I needed to add my Key and ID to the Config Vars in my app settings on Heroku and then the API functioned as expected. 
 
 ### Colour Coding Letters in User Guess
-Colorama is used to add the colour coding to each of the letters in the user guess. Each time a user makes a guess, that colour coded guess is added to the `guesses_list` so that all their guesses can be printed back to them after each turn. When I initially wrote the code to print out the user `guesses_list`, the colours were not printing out and the Colorama encoding was being printed out alongside the user guess, making it impossible to read. After some research, I realised that the colours would only print out as a string (not a list). In order to overcome this problem, I used a `for loop` to print out each string in the `guesses_list` separately. 
+Colorama is used to add the colour coding to each of the letters in the user guess. Each time a user makes a guess, that colour coded guess is added to the `guesses_list` so that all their guesses can be printed back to them after each turn. When I initially wrote the code to print out the user `guesses_list`, the colours were not printing out and the Colorama encoding was being printed out alongside the user guess, making it impossible to read.
+
+After some research, I realised that the colours would only print out as a string (not a list). In order to overcome this problem, I used a `for` loop to print out each string in the `guesses_list` separately. 
 
 ## Deployment
 
