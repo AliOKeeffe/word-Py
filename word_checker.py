@@ -1,9 +1,11 @@
 """
-TBD
+Wordchecker Class
 """
+
 from collections import Counter
-import colorama  # import colorama for colour coding letters
+import colorama
 from colorama import Fore, Back
+
 from oxford_api import OxfordDictAPI
 
 colorama.init(autoreset=True)

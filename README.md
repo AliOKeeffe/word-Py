@@ -5,7 +5,7 @@ The game is a mixture of luck and logic. Not only does it allow the user to impr
 
 The live link can be found here - [Word-Py](https://word-py.herokuapp.com/)
 
-![Site Mockup](docs/readme_images/screen_mockup.png)
+![Site Mockup](docs/readme_images/web_mockup.png)
 
 ## How to Play
 - The user has 6 chances to guess a random 5 letter word.

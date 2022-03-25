@@ -1,14 +1,16 @@
 """
-TBD
+A brief description of the module and its purpose
+A list of any classes, exception, functions, and any other objects exported by the module
 """
+
 from datetime import date
-import os  # import to clear terminal
-import random  # import random to get random word for game
-import gspread  # import gpsread
+import os
+import random
+import gspread
 from google.oauth2.service_account import Credentials
-import pyfiglet  # import Acsii art library - pyfiglet
+import pyfiglet
 import pandas as pd
-import colorama  # import colorama for colour coding letters
+import colorama
 from colorama import Fore, Style
 from word_checker import WordChecker
 

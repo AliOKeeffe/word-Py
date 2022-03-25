@@ -1,6 +1,7 @@
 """
-Describe imports
+Oxford Dictionaries API Class
 """
+
 import os
 from os import path
 import requests
