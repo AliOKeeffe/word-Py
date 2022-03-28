@@ -241,7 +241,7 @@ The README.md was passed through Grammarly and all links were checked before fin
 - [Heroku](https://dashboard.heroku.com/apps) -  used to deploy the live project.
 - [Lucidchart](https://lucid.app/documents#/dashboard) -  used to create the game flowchart
 - [PEP8 Online](http://pep8online.com/) - used to validate all the Python code
-- [Grammerly]
+- [Grammerly](https://app.grammarly.com/) - used to proof read the README.md
 
 
 ## Known Bugs

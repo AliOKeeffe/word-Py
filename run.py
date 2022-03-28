@@ -78,7 +78,7 @@ class Game:
 
     def user_menu(self):
         """
-        Ask the user if the wish to play or see the instructions.
+        Ask the user if they wish to play or see the instructions.
         Return an error message if user inputs an invalid selection.
         """
         print('Please choose from the following options:\n')
@@ -151,7 +151,7 @@ class Game:
         """
         Run a while loop to collect a valid guess from the user if they have
         chances remaining.
-        If the user has no chances the the game is over.
+        If the user has no chances then the game is over.
         If the user guesses correctly, they win and leaderboard is updated.
         Display the game over menu.
         """
@@ -213,7 +213,7 @@ class Game:
         Get the leaderboard data from Google Sheets.
         Sort the leaderboard by date and then by number of attempts with Pandas
         Reset the table index and start it at 1.
-        Show the top 10 entries in the leaderboard.
+        Show the top 10 entries on the leaderboard.
         Credit: https://realpython.com/pandas-sort-python/
         """
         scores = self.leaderboard.get_all_values()
@@ -236,7 +236,7 @@ class Game:
 def main():
     """
     Retrieve an answer string from the words.txt file. Create a new instance of
-    WordChecker, passing the answer as an parameter. Create a new instance of
+    WordChecker, passing the answer as a parameter. Create a new instance of
     Game, passing the WordChecker instance as a parameter.
     Start the game using the introduction() method.
     """
